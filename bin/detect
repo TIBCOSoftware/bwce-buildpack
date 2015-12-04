@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# Copyright 2012 - 2015 by TIBCO Software Inc. 
+# All rights reserved.
+#
+# This software is confidential and proprietary information of
+# TIBCO Software Inc.
+#
+#
+earDir=$1
+metaInf=${earDir}/META-INF
+manifest=${metaInf}/MANIFEST.MF
+tibcoxml=${metaInf}/TIBCO.xml
+bwAppHeader="TIBCO-BW-Application"
+notBW6="Not a BW Application."
+if [ -d ${metaInf} ]; then
+    if [ -f ${manifest} ]; then
+	if [ -e ${tibcoxml} ]; then
+	    bwAppHeaderStr=`grep ${bwAppHeader} ${manifest}`
+	    res=$?
+	    if [ ${res} -eq 0 ]; then
+		echo bw
+	    else
+		echo "${notBW6} ${bwAppHeader} header not detected in ${manifest}"
+		exit 4
+	    fi	    
+	else
+	    echo "${notBW6} No ${tibcoxml} file detected"
+	    exit 3
+	fi
+    else
+	echo "${notBW6} No ${manifest} manifest file detected"
+	exit 2
+    fi
+else
+    echo "${notBW6} No ${metaInf} directory detected"
+    exit 1
+fi
+
+# eof
