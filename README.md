@@ -1,6 +1,11 @@
 # Buildpack Scripts for TIBCO BusinessWorks™ Container Edition 
 The TIBCO BusinessWorks™ Container Edition buildpack is a highly extensible [Cloud Foundry] buildpack for running TIBCO BusinessWorks™ Container Edition applications. This buildpack can be customized for supported third-party drivers, OSGI bundles, integration with application configuration management systems, application certificate management etc.
+
+TIBCO BusinessWorks(TM) Container Edition allows customers to leverage the power and functionality of TIBCO ActiveMatrix BusinessWorks(TM) in order to build cloud-native applications with an API-first approach and deploy it to container-based PaaS platforms such as Cloud Foundry(TM).
+
 To find more about TIBCO BusinessWorks™ Container Edition, refer https://docs.tibco.com/products/tibco-businessworks-container-edition-1-0-0
+
+These buildpack scripts are subject to the license shared as part of the repository. Kindly review the license before using or downloading these buildpack scripts.
      
 ##Prerequisite
     To create/extend buildpack, you must have access to https://edelivery.tibco.com
