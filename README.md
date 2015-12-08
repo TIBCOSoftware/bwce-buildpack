@@ -2,17 +2,17 @@
 The TIBCO BusinessWorks™ Container Edition buildpack is a highly extensible [Cloud Foundry] buildpack for running TIBCO BusinessWorks™ Container Edition applications. This buildpack can be customized for supported third-party drivers, OSGI bundles, integration with application configuration management systems, application certificate management etc.
 To find more about TIBCO BusinessWorks™ Container Edition, refer https://docs.tibco.com/products/tibco-businessworks-container-edition-1-0-0
      
-#Prerequisite
+##Prerequisite
     To create/extend buildpack, you must have access to https://edelivery.tibco.com
     
-#Create buildpack
+##Create buildpack
    1. Clone this repository onto your local machine
    2. Download TIBCO BusinessWorks™ Container Edition 1.0.0 from https://edelivery.tibco.com
    3. Find bwce.zip from the download and copy it into `<Your-local-buildpack-repo>/resources/cache` (Create cache folder if not exists)
    4. Zip contents of repository from your local machine as [`bwce-buildpack.zip`]
    5. Push new buildpack to Cloud Foundry environment
 
-#Buildpack Extension
+##Buildpack Extension
    1. Clone this repository onto your local machine
    2. Download TIBCO BusinessWorks™ Container Edition 1.0.0 from https://edelivery.tibco.com
    3. Find bwce.zip from the download and copy it into `<Your-local-buildpack-repo>/resources/cache` (Create cache folder if not exists)
@@ -26,5 +26,6 @@ To find more about TIBCO BusinessWorks™ Container Edition, refer https://docs.
    7. Zip contents of repository from your local machine as [`bwce-buildpack.zip`]
    8. Push new buildpack to Cloud Foundry environment
 
-  
+##License
+These buildpack scripts are released under [TIBCO Software Inc.](License.md) license.
      
