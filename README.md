@@ -1,4 +1,4 @@
-# Cloud Foundry TIBCO BusinessWorks Container Edition Buildpack (bwce-buildpack)
+# TIBCO BusinessWorks Container Edition Buildpack (bwce-buildpack) for Cloud Foundry 
 The `bwce-buildpack` is a highly extensible [Cloud Foundry] buildpack for running TIBCO BusinessWorks Container Edition applications. This buildpack can be customized for supported third-party drivers, OSGI bundles, integration with application configuration management systems, application certificate management etc.
      
 #Prerequisite
