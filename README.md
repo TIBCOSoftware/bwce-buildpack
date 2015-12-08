@@ -3,7 +3,7 @@ The TIBCO BusinessWorks™ Container Edition buildpack is a highly extensible [C
 To find more about TIBCO BusinessWorks™ Container Edition, refer https://docs.tibco.com/products/tibco-businessworks-container-edition-1-0-0
      
 #Prerequisite
-    To create/extend bwce-buildpack, you must have access to https://edelivery.tibco.com
+    To create/extend buildpack, you must have access to https://edelivery.tibco.com
     
 #Create buildpack
    1. Clone this repository onto your local machine
