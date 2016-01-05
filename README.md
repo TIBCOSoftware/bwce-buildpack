@@ -32,5 +32,5 @@ These buildpack scripts are subject to the license shared as part of the reposit
    8. Push new buildpack to your Cloud Foundry environment.
 
 ##License
-These buildpack scripts are released under [TIBCO Software Inc.](License.md) license.
+These buildpack scripts are released under [3-clause BSD](License.md) license.
      
