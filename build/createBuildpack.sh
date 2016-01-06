@@ -17,9 +17,9 @@ zipLocation=$1
 cd ..
 mkdir -p resources/cache && cp -i $zipLocation "$_"
 
-zip -r bwce-buildpack.zip bin/ java-profile-token-resolver/ resources/
+zip -r build/bwce-buildpack.zip bin/ java-profile-token-resolver/ resources/
 
-buildpackLocation=`get_abs_filename bwce-buildpack.zip`
+buildpackLocation=`get_abs_filename build/bwce-buildpack.zip`
 
 cd build
 if [ "$2" == "-test" ]; then
