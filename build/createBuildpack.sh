@@ -9,7 +9,7 @@ echo ">>>>>>>>>> Start time: $(date) <<<<<<<<<<<<"
 if [[ $# -lt 1 || $# -gt 2 ]]; then
     echo "Usage: ./createBuildpack.sh <bwce.zip location > <options>"
     printf "\t %s \t\t %s \n\t\t\t\t %s \n" "bwce.zip location"
-    printf "\t %s \t\t\t %s \n" "-test" "test buildpack after creation of it"
+    printf "\t %s \t\t\t %s \n" "-test" "Test buildpack after creation"
     exit 1
 fi
 
