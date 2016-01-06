@@ -40,7 +40,7 @@ Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create customized 
   * Loggin to your Cloud Foundry environment
   * Push buildpack to Cloud Foundry if not already done
   * CD to [test](/test) directory and run [testBuildpack.sh](/test/testBuildpack.sh)
-If valid buildpack is created and uploaded, you will see `Buildpack test Passed !!` message printed. In case of failure, inspect logs of `tibco.bwce.sample.http` application.
+If valid buildpack is created and uploaded, you will see `Buildpack test Passed !!` message printed. In case of failure, inspect logs for `tibco.bwce.sample.http` application.
 
 ##License
 These buildpack scripts are released under [3-clause BSD](License.md) license.
