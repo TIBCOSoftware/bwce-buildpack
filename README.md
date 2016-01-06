@@ -32,14 +32,14 @@ Extend the buildpack for Third-party JDBC drivers or OSGi bundles: You can custo
 Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create customized buildpack.
 
 ##Push buildpack to CloudFoundry environment
-     1. Loggin to your Cloud Foundry environment
-     2. Create buildpack if not already created
-     2. Run [/build/pushBuildpack.sh](/build/pushBuildpack.sh)
+  * Loggin to your Cloud Foundry environment
+  * Create buildpack if not already created
+  * Run [/build/pushBuildpack.sh](/build/pushBuildpack.sh)
      
 ##Test buildpack
-     1. Loggin to your Cloud Foundry environment
-     2. Push buildpack to Cloud Foundry if not already done
-     3. CD to [test](/test) directory and run [testBuildpack.sh](/test/testBuildpack.sh)
+  * Loggin to your Cloud Foundry environment
+  * Push buildpack to Cloud Foundry if not already done
+  * CD to [test](/test) directory and run [testBuildpack.sh](/test/testBuildpack.sh)
 If valid buildpack is created and uploaded, you will see `Buildpack test Passed !!` message printed. In case of failure, inspect logs of `tibco.bwce.sample.http` application.
 
 ##License
