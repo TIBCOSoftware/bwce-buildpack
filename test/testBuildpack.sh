@@ -1,7 +1,7 @@
 #!/bin/bash
 OUTPUT=`cf buildpacks | grep "bwce-buildpack"`
 if [ -z "$OUTPUT" ]; then
-    echo "bwce-buildpack is not in the buildpacks. Please run the uploadBuildpack.sh first."
+    echo "bwce-buildpack is not found in the buildpacks. Run ../build/createBuildpack.sh and ../build/uploadBuildpack.sh to create/upload the buildpack."
     exit 1
 fi
 
