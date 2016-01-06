@@ -32,12 +32,12 @@ You can customize the buildpack to use supported third-party drivers e.g. Oracle
 Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create customized buildpack.
 
 ##Push buildpack to CloudFoundry environment
-  * Loggin to your Cloud Foundry environment
+  * Login to your Cloud Foundry environment
   * Create buildpack if not already created
   * Run [/build/pushBuildpack.sh](/build/pushBuildpack.sh)
      
 ##Test buildpack
-  * Loggin to your Cloud Foundry environment
+  * Login to your Cloud Foundry environment
   * Push buildpack to Cloud Foundry if not already done
   * CD to [test](/test) directory and run [testBuildpack.sh](/test/testBuildpack.sh)
 If valid buildpack is created and uploaded, you will see `Buildpack test Passed !!` message printed. In case of failure, inspect logs for `tibco.bwce.sample.http` application.
