@@ -1,7 +1,7 @@
 #!/bin/bash
 OUTPUT=`cf buildpacks | grep "bwce-buildpack"`
 if [ -z "$OUTPUT" ]; then
-    echo "bwce-buildpack is not found in the buildpacks. Run ../build/createBuildpack.sh and ../build/uploadBuildpack.sh to create/upload the buildpack."
+    echo "bwce-buildpack is not found in the buildpacks. Refer Readme to create and upload buildpack."
     exit 1
 fi
 
@@ -17,7 +17,7 @@ BWCE_MESSAGE=`grep -E "RESPONSE_MESSAGE:" manifest.yml | cut -d ':' -f 2 | sed '
 if [ "${a}" = "Greetings from $BWCE_MESSAGE" ]; then
     echo "----------------------------------------------------------------------";
         echo "******* HTTP Greetings App - running successfully! *******";
-     echo "******* HTTP Greetings App - test passed! *******";
+     echo "******* bwce-buildpack test Passed !! *******";
     echo "----------------------------------------------------------------------";
 else
     echo ${a}
@@ -25,7 +25,7 @@ else
     echo "******* HTTP Greetings App Failed ! Deleting App *******";
     echo "----------------------------------------------------------------------";
     echo "----------------------------------------------------------------------";
-    echo "******* bwce-buildpack test Failed ! *******";
+    echo "******* bwce-buildpack test Failed !! *******";
     echo "----------------------------------------------------------------------";
     cf delete $appName -f
     exit -1
