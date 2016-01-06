@@ -18,7 +18,7 @@ Download appropriate TIBCO BusinessWorks™ Container Edition 1.0.0 artifacts fr
      
 ##Create buildpack
    1. Clone this repository onto your local machine.
-   2. Locate bwce.zip file from the downloaded artifacts and run [/build/createBuildpack.sh](/build/createBuildpack.zip). This will create TIBCO BusinessWorks™ Container Edition buildpack(bwce-buildpack.zip) inside [build](/build) directory.
+   2. Locate bwce.zip file from the downloaded artifacts and run [/build/createBuildpack.sh](/build/createBuildpack.sh). This will create TIBCO BusinessWorks™ Container Edition buildpack(bwce-buildpack.zip) inside [build](/build) directory.
 
 ##Buildpack Extension
 Extend the buildpack for Third-party JDBC drivers or OSGi bundles: You can customize the buildpack to use the supported third-party drivers e.g. Oracle JDBC driver or OSGified bundles in TIBCO BusinessWorks™ Container Edition runtime.
