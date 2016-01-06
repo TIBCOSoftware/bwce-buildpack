@@ -6,15 +6,15 @@ TIBCO BusinessWorks(TM) Container Edition allows customers to leverage the power
 To find more about TIBCO BusinessWorks™ Container Edition, refer https://docs.tibco.com/products/tibco-businessworks-container-edition-1-0-0
 
 These buildpack scripts are subject to the license shared as part of the repository. Review the license before using or downloading these buildpack scripts.
-     
+
 ##Prerequisite
     1. Need access to https://edelivery.tibco.com.
-    2. Install [Cloud Foundry CLI](https://docs.pivotal.io/pivotalcf/devguide/installcf/install-go-cli.html) .
+    2. Install [Cloud Foundry CLI](https://docs.pivotal.io/pivotalcf/devguide/installcf/install-go-cli.html).
     3. Install ZIP utility on your local machine.
-    4. [Login to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login) .
-
+    4. [Login to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login).
+    
 ##Download TIBCO BusinessWorks™ Container Edition Runtime
-    Download appropriate TIBCO BusinessWorks™ Container Edition 1.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html) . It contains TIBCO BusinessWorks™ Container Edition runtime(bwce.zip).
+    Download appropriate TIBCO BusinessWorks™ Container Edition 1.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime(bwce.zip).
      
 ##Create buildpack
    1. Clone this repository onto your local machine.
