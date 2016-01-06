@@ -1,9 +1,9 @@
 ---
 applications:
-- name: httpapp 
+- name: tibco.bwce.sample.http 
   memory: 1024M
   path: tibco.bwce.sample.http_1.0.0.ear
   timeout: 180
   buildpack: bwce-buildpack
   env: 
-        RESPONSE_MESSAGE: 2016BWCE
+        RESPONSE_MESSAGE: Hello World!!
