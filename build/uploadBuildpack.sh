@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [[ $# -lt 1 || $# -gt 2 ]]; then
-        echo "Usage: ./uploadBuildpack.sh <bwbuildpack.zip location > <options>"
-        printf "\t %s \t\t %s \n\t\t\t\t %s \n" "bwbuildpack.zip location"
+        echo "Usage: ./uploadBuildpack.sh <bwce-buildpack.zip location > <options>"
+        printf "\t %s \t\t %s \n\t\t\t\t %s \n" "bwce-buildpack.zip location"
         printf "\t %s \t\t\t %s \n" "-test" "test one application after uploading of the buildpack"
         exit 1
 fi

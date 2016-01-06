@@ -6,14 +6,14 @@ if [ -z "$OUTPUT" ]; then
 fi
 
 
-echo "***** Starting BW Container Sanity *****"
+echo "***** Starting BWCE Sanity *****"
 
 echo "***** Pushing HTTP Greetings App to CF *****"
 URL=`cf push -f manifest.yml | grep "urls:" | cut -d ' ' -f 2`
 sleep 5
 a=$(curl "http://$URL/greetings/")
-BW_MESSAGE=`grep -E "RESPONSE_MESSAGE:" manifest.yml | cut -d ':' -f 2 | tr -d ' ' `
-if [ "${a}" = "Greetings from $BW_MESSAGE" ]; then
+BWCE_MESSAGE=`grep -E "RESPONSE_MESSAGE:" manifest.yml | cut -d ':' -f 2 | tr -d ' ' `
+if [ "${a}" = "Greetings from $BWCE_MESSAGE" ]; then
     echo "----------------------------------------------------------------------";
         echo "******* HTTP Greetings App - running successfully! *******";
      echo "******* HTTP Greetings App - test passed! *******";
