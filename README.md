@@ -40,7 +40,7 @@ Run run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create customi
      1. Loggin to your Cloud Foundry environment
      2. Push buildpack to Cloud Foundry if not already done
      3. Run run [/test/testBuildpack.sh](/test/testBuildpack.sh)
-If buildpack is correctly created and uploaded, you will see
+If valid buildpack is created and uploaded, you will see `Buildpack test Passed !!` message printed.
 
 ##License
 These buildpack scripts are released under [3-clause BSD](License.md) license.
