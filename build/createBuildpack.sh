@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2016, TIBCO Software Inc. All rights reserved.
+# You may not use this file except in compliance with the license 
+# terms contained in the TIBCO License.md file provided with this file.
 
 get_abs_filename() {
 # $1 : relative filename
