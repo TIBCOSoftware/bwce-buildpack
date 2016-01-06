@@ -3,7 +3,7 @@
 if [[ $# -lt 1 || $# -gt 2 ]]; then
         echo "Usage: ./uploadBuildpack.sh <path/to/bwce-buildpack.zip> <options>"
         printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Location of buildpack zip(bwce-buildpack.zip)"
-        printf "\t %s \t\t\t %s \n" "-test" "Test buildpack after uploading"
+        printf "\t %s \t\t\t %s \n" "-test" "Test uploaded buildpack"
         exit 1
 fi
 
