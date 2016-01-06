@@ -17,7 +17,7 @@ BWCE_MESSAGE=`grep -E "RESPONSE_MESSAGE:" manifest.yml | cut -d ':' -f 2 | sed '
 if [ "${a}" = "Greetings from $BWCE_MESSAGE" ]; then
     echo "----------------------------------------------------------------------";
         echo "******* HTTP Greetings App - running successfully! *******";
-     echo "******* bwce-buildpack test Passed !! *******";
+     echo "******* Buildpack test Passed !! *******";
     echo "----------------------------------------------------------------------";
 else
     echo ${a}
@@ -25,7 +25,7 @@ else
     echo "******* HTTP Greetings App Failed ! Deleting App *******";
     echo "----------------------------------------------------------------------";
     echo "----------------------------------------------------------------------";
-    echo "******* bwce-buildpack test Failed !! *******";
+    echo "******* Buildpack test Failed !! *******";
     echo "----------------------------------------------------------------------";
     cf delete $appName -f
     exit -1
