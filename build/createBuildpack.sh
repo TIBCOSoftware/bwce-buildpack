@@ -7,8 +7,8 @@ echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 
 echo ">>>>>>>>>> Start time: $(date) <<<<<<<<<<<<"
 if [[ $# -lt 1 || $# -gt 2 ]]; then
-    echo "Usage: ./createBuildpack.sh <bwce.zip location > <options>"
-    printf "\t %s \t\t %s \n\t\t\t\t %s \n" "bwce.zip location"
+    echo "Usage: ./createBuildpack.sh <path/to/bwce.zip> <options>"
+    printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Location of runtime zip(bwce.zip)"
     printf "\t %s \t\t\t %s \n" "-test" "Test buildpack after creation"
     exit 1
 fi
@@ -28,4 +28,3 @@ else
     sh uploadBuildpack.sh $buildpackLocation
 fi
 echo ">>>>>>>>>> End time: $(date) <<<<<<<<<<<<"
-echo "Test Complete!"
