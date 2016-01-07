@@ -35,15 +35,9 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 /*
- * Copyright© 2016 TIBCO Software Inc.
- * All rights reserved.
- *
- * Licensed under the 3-clause BSD License (the "License");
- * You may not use this file except in compliance with the License.
- * Unless required by applicable law or agreed to in writing, 
- * software distributed under the License is distributed on an "AS IS" BASIS,WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
- * either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Copyright (c) 2016, TIBCO Software Inc. All rights reserved.
+ * You may not use this file except in compliance with the license 
+ * terms contained in the TIBCO License.md file provided with this file.
  *
  */
 
