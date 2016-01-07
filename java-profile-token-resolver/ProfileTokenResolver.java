@@ -35,10 +35,15 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 /*
- * Copyright© 2015 TIBCO Software Inc.
+ * Copyright© 2016 TIBCO Software Inc.
  * All rights reserved.
  *
- * This software is confidential and proprietary information of TIBCO Software Inc.
+ * Licensed under the 3-clause BSD License (the "License");
+ * You may not use this file except in compliance with the License.
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the License is distributed on an "AS IS" BASIS,WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
  *
  */
 
@@ -139,11 +144,11 @@ public class ProfileTokenResolver {
                             // Protected Resource
                             // Get Authorization
                             connection.setRequestProperty("Authorization", getAuthorization(credentialsObject));
-                        } else if(url.contains("@")) {
-                            //Basic Auth
+                        } else if (url.contains("@")) {
+                            // Basic Auth
                             connection.setRequestProperty("Authorization", getBasicAuthentication(url));
                         }
-                        
+
                         Properties zuulProperties = new Properties();
                         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
                         zuulProperties.load(in);
@@ -183,8 +188,8 @@ public class ProfileTokenResolver {
                         if (credentialsObject.has("access_token_uri")) {
                             // OAuth 2.0
                             connection.setRequestProperty("Authorization", getAuthorization(credentialsObject));
-                        } else if(url.contains("@")) {
-                            //Basic Auth
+                        } else if (url.contains("@")) {
+                            // Basic Auth
                             connection.setRequestProperty("Authorization", getBasicAuthentication(url));
                         }
                         StringBuilder result = new StringBuilder();
@@ -256,11 +261,10 @@ public class ProfileTokenResolver {
         return tokenType + " " + accessToken;
     }
 
-    
     private static String getBasicAuthentication(String serverUri) throws Throwable {
         return "Basic " + DatatypeConverter.printBase64Binary(serverUri.split("@")[0].split("://")[1].getBytes());
     }
-    
+
     private static boolean isSpringCloudConfigurationService(JSONObject serviceConfig) {
         boolean result = false;
         try {
@@ -456,10 +460,9 @@ public class ProfileTokenResolver {
         }
     }
 
-
     private static boolean isDBUrl(String value) {
-        return value.startsWith("jdbc:") || value.startsWith("postgresql:") || value.startsWith("hsqldb:") || value.startsWith("mysql:") || value.startsWith("oracle:")
-                || value.startsWith("sqlserver:") || value.startsWith("db2:");
+        return value.startsWith("jdbc:") || value.startsWith("postgresql:") || value.startsWith("hsqldb:") || value.startsWith("mysql:")
+                || value.startsWith("oracle:") || value.startsWith("sqlserver:") || value.startsWith("db2:");
     }
 
     private static void resolveTokens(Map<String, String> tokenMap) throws Exception {
