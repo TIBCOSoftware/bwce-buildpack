@@ -410,30 +410,30 @@ public class ProfileTokenResolver {
                                     String key = itr.next();
                                     sb.append(key);
                                     String value = credentialConfig.getString(key);
-                                    if ("uri".equalsIgnoreCase(key) || "url".equalsIgnoreCase(key) || "jdbcUrl".equalsIgnoreCase(key)) {
-                                        if (isDBUrl(value)) {
-                                            String userName = credentialConfig.has("username") ? credentialConfig.getString("username")
-                                                    : (credentialConfig.has("user") ? credentialConfig.getString("user") : null);
-                                            if (value.startsWith("postgres:")) {
-                                                value = value.replace("postgres:", "postgresql:");
-                                            }
-                                            if (userName != null) {
-                                                // BW does not support
-                                                // username/password in the DB
-                                                // URL
-                                                // Remove username:password@
-                                                value = value.replaceAll(userName + ":" + credentialConfig.getString("password") + "@", "");
+                                    if (isDBUrl(value)) {
+                                        //Format DB URL
+                                        String userName = credentialConfig.has("username") ? credentialConfig.getString("username")
+                                                : (credentialConfig.has("user") ? credentialConfig.getString("user") : null);
+                                        if (value.contains("postgres:")) {
+                                            value = value.replace("postgres:", "postgresql:");
+                                        }
+                                        
+                                        if (userName != null) {
+                                            // BW does not support
+                                            // username/password in the DB
+                                            // URL
+                                            // Remove username:password@
+                                            value = value.replaceAll(userName + ":" + credentialConfig.getString("password") + "@", "");
 
-                                                // Remove ?*
-                                                if (value.contains("?")) {
-                                                    value = value.substring(0, value.indexOf("?"));
-                                                }
+                                            // Remove ?*
+                                            if (value.contains("?")) {
+                                                value = value.substring(0, value.indexOf("?"));
                                             }
+                                        }
 
-                                            // BW expects JDBC URL
-                                            if (!value.startsWith("jdbc:")) {
-                                                value = "jdbc:" + value;
-                                            }
+                                        // BW expects JDBC URL
+                                        if (!value.startsWith("jdbc:")) {
+                                            value = "jdbc:" + value;
                                         }
                                     }
                                     valueMap.put(sb.toString(), value);
@@ -455,7 +455,7 @@ public class ProfileTokenResolver {
     }
 
     private static boolean isDBUrl(String value) {
-        return value.startsWith("jdbc:") || value.startsWith("postgresql:") || value.startsWith("hsqldb:") || value.startsWith("mysql:")
+        return value.startsWith("jdbc:") || value.startsWith("postgres:") || value.startsWith("postgresql:") || value.startsWith("hsqldb:") || value.startsWith("mysql:")
                 || value.startsWith("oracle:") || value.startsWith("sqlserver:") || value.startsWith("db2:");
     }
 
