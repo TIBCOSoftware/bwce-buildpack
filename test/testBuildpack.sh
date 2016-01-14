@@ -4,7 +4,13 @@
 # terms contained in the TIBCO License.md file provided with this file.
 
 
-OUTPUT=`cf $1 | grep $1`
+if [[ $# -lt 1 || $# -gt 1 ]]; then
+    echo "Usage: ./testBuildpack.sh <buildpack name> "
+    printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Buildpack available by typing cf buildpacks"
+    exit 1
+fi
+
+OUTPUT=`cf buildpacks | grep $1`
 if [ -z "$OUTPUT" ]; then
     echo "${1} is not found in the buildpacks. Refer Readme to create and upload buildpack."
     exit 1
