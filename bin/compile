@@ -132,7 +132,8 @@ checkCerts()
 {
 	certsFolder=$BUILD_PACK_DIR/resources/addons/certs
 	if [ "$(ls $certsFolder)"  ]; then 
-		jreLocation=tibco.home/tibcojre64/1.7.0
+		JRE_VERSION=`ls tibco.home/tibcojre64/`
+		jreLocation=tibco.home/tibcojre64/$JRE_VERSION
 		certsStore=$jreLocation/lib/security/cacerts
 		chmod +x $jreLocation/bin/keytool
 		for name in $(find $certsFolder -type f); 
