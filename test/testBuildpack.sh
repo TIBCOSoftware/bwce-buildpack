@@ -2,8 +2,6 @@
 # Copyright (c) 2016, TIBCO Software Inc. All rights reserved.
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
-
-
 if [[ $# -lt 1 || $# -gt 1 ]]; then
     echo "Usage: ./testBuildpack.sh <buildpack name> "
     printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Buildpack available by typing cf buildpacks"
