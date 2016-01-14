@@ -149,31 +149,12 @@ checkCerts()
 
 }
 
-downloadOpenjdk()
-{
-architecture=`uname -m`
-platform=`lsb_release -cs`
-
-echo "Installing openjdk ..."
-wget -q `curl -s http://download.pivotal.io.s3.amazonaws.com/openjdk/$platform/$architecture/index.yml| sed "s#---##g" | grep 1.7.* |awk -F': ' '{ print $2 }' | tail -1` -P /tmp 
-JDK_VERSION=`ls /tmp/ | grep tar.gz`
-echo "Downloaded openjdk $JDK_VERSION"
-mkdir tibco.home/open_jdk_jre
-echo "Installing ..."
-tar xvfz /tmp/*.tar.gz -C tibco.home/open_jdk_jre --strip-components=1 > /dev/null
-echo "Installed"
-}
-
 echo "Running BWCE buildpack"
 
 BUILD_DIR=$1
 CACHE_DIR=$2
 BUILD_PACK_DIR=$(dirname $(dirname $0))
-
 export APPDIR=$BUILD_DIR
-
-
-
 
 checkProfile
 
@@ -185,11 +166,6 @@ if [[ ${BW_LOGLEVEL} ]]; then
 	echo "cache dir is $CACHE_DIR"
 fi
 
-
-
-
-
-
 cd $BUILD_DIR
 if [[ ${BW_LOGLEVEL} ]]; then
 	ls -la
@@ -197,10 +173,6 @@ fi
 
 
 profileFile=`ls | grep "substvar"`
-
-
-
-
 
 if [ -s ${profileFile} -a  $profileFile ]; then
 	BW_PROFILE=$profileFile
@@ -219,12 +191,6 @@ echo "BW_PROFILE is $BW_PROFILE"
 # move app into place
 zip -r /tmp/bwapp.ear *
 
-
-
-
-
-
-
 rm -fr *
 mkdir $APPDIR/tmp
 mv /tmp/$BW_PROFILE $APPDIR/tmp/pcf.substvar
@@ -235,9 +201,6 @@ mv /tmp/bwapp.ear tibco.home/bw*/*/bin/
 
 logback=tibco.home/bw*/*/config/logback.xml
 appnodeConfigFile=tibco.home/bw*/*/config/appnode_config.ini
-
-
-
 
 
 if [[ ${BW_LOGLEVEL} ]]; then
@@ -254,11 +217,6 @@ if [[ ${BW_LOGLEVEL} ]]; then
 	ls -la
 fi
 
-
-
-
-
-
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
 cp $BUILD_PACK_DIR/java-profile-token-resolver/ProfileTokenResolver.java $BUILD_DIR
 if [ -f $BUILD_PACK_DIR/resources/addons/certs/*.jks  ]; then 
@@ -269,9 +227,5 @@ chmod 755 $BUILD_DIR/prestart.sh
 checkEnvSubstituteConfig
 checkJarsPalettes
 checkCerts
-#downloadOpenjdk
-
-
-
 
 # eof

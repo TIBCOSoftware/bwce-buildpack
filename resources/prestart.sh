@@ -58,7 +58,8 @@ if grep -q BW.CLOUD.PORT "$APPDIR/tmp/pcf.substvar"; then
 fi
 
 export JETTISON_JAR=`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison*/jettison*.jar`
-jreLink=tibcojre64/1.7.0
+JRE_VERSION=`ls $APPDIR/tibco.home/tibcojre64/`
+jreLink=tibcojre64/$JRE_VERSION
 chmod +x $APPDIR/tibco.home/$jreLink/bin/java
 chmod +x $APPDIR/tibco.home/$jreLink/bin/javac
 $APPDIR/tibco.home/$jreLink/bin/javac -cp $JETTISON_JAR:.:$APPDIR/tibco.home/$jreLink/lib:$APPDIR/tibco.home/$jreLink/bin ProfileTokenResolver.java

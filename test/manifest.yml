@@ -4,6 +4,6 @@ applications:
   memory: 1024M
   path: tibco.bwce.sample.http_1.0.0.ear
   timeout: 180
-  buildpack: bwce-buildpack
+  random-route: true
   env: 
         RESPONSE_MESSAGE: Hello World!!

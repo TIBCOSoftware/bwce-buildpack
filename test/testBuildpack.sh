@@ -3,9 +3,10 @@
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
 
-OUTPUT=`cf buildpacks | grep "bwce-buildpack"`
+
+OUTPUT=`cf $1 | grep $1`
 if [ -z "$OUTPUT" ]; then
-    echo "bwce-buildpack is not found in the buildpacks. Refer Readme to create and upload buildpack."
+    echo "${1} is not found in the buildpacks. Refer Readme to create and upload buildpack."
     exit 1
 fi
 
@@ -14,7 +15,7 @@ echo "***** Starting BWCE Sanity *****"
 
 echo "***** Pushing HTTP Greetings App to CF *****"
 appName=`grep -E "name:" manifest.yml | cut -d ':' -f 2 | sed 's/^ *//g' | sed 's/ *$//g'`
-URL=`cf push -f manifest.yml | grep "urls:" | cut -d ' ' -f 2`
+URL=`cf push -f manifest.yml -b $1 | grep "urls:" | cut -d ' ' -f 2`
 sleep 5
 a=$(curl "http://$URL/greetings/")
 BWCE_MESSAGE=`grep -E "RESPONSE_MESSAGE:" manifest.yml | cut -d ':' -f 2 | sed 's/^ *//g' | sed 's/ *$//g' `
