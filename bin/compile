@@ -56,15 +56,18 @@ do
 	defaultProfile=$x;;esac	
 done
 
-echo $defaultProfile
-
+if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
+	echo $defaultProfile
+fi
 
 if [ -z ${BW_PROFILE:=${defaultProfile}} ]; then echo "BW_PROFILE is unset. Set it to $defaultProfile"; 
 else 
 		case $BW_PROFILE in
  		*.substvar ) ;;
 		* ) BW_PROFILE="${BW_PROFILE}.substvar";;esac		
-	echo "BW_PROFILE is set to '$BW_PROFILE'";	
+    if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
+		echo "BW_PROFILE is set to '$BW_PROFILE'";
+	fi
 fi
 }
 
@@ -159,7 +162,7 @@ export APPDIR=$BUILD_DIR
 
 checkProfile
 
-if [[ ${BW_LOGLEVEL} ]]; then
+if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 	echo "args: $1 $2"
 	echo "appdir is $APPDIR"
 	echo "build pack dir is $BUILD_PACK_DIR"
@@ -188,9 +191,15 @@ else
 	fi
 fi
 
-echo "BW_PROFILE is $BW_PROFILE"
+if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
+	echo "BW_PROFILE is $BW_PROFILE"
+	zip -r /tmp/bwapp.ear *
+else
+	zip -r -q /tmp/bwapp.ear *
+fi
 # move app into place
-zip -r /tmp/bwapp.ear *
+
+
 
 rm -fr *
 mkdir $APPDIR/tmp
@@ -203,18 +212,17 @@ mv /tmp/bwapp.ear tibco.home/bw*/*/bin/
 logback=tibco.home/bw*/*/config/logback.xml
 appnodeConfigFile=tibco.home/bw*/*/config/appnode_config.ini
 
-
-if [[ ${BW_LOGLEVEL} ]]; then
+if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 		if [ -e ${logback} ]; then
 			sed -i.bak "/<root/ s/\".*\"/\"$BW_LOGLEVEL\"/Ig" $logback
-			echo "Changed the log to $BW_LOGLEVEL level"
+			echo "The loglevel is set to $BW_LOGLEVEL level"
 		fi
 	else
 			sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
-			echo "Changed the log to ERROR level"
+			#echo "The loglevel set to ERROR level"
 fi
 
-if [[ ${BW_LOGLEVEL} ]]; then
+if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 	ls -la
 fi
 
