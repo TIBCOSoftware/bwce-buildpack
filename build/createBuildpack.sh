@@ -18,7 +18,10 @@ if [[ $# -lt 1 || $# -gt 3 ]]; then
 fi
 
 zipLocation=$1
-cd ..
+if [[ "$PWD" == *bwce-buildpack/build* ]]; then
+	cd ..
+fi
+
 mkdir -p resources/cache && cp -i $zipLocation "$_"
 
 if [ -z "$2"  ]; then

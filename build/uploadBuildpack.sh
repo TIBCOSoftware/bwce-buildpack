@@ -25,6 +25,9 @@ else
 fi
 
 if [ "$3" == "-test" ]; then
-    cd ../test
+    if [[ "$PWD" == *bwce-buildpack/build* ]]; then
+        cd ..
+    fi
+    cd test
     sh testBuildpack.sh ${buildpackName}
 fi
