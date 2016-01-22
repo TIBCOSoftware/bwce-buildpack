@@ -101,6 +101,17 @@ fi
 
 checkEnvSubstituteConfig()
 {
+if [[ ${BW_SYS_PROPS} ]]; then
+		if [ -e ${appnodeConfigFile} ]; then
+			tmp_arr=$(echo $BW_SYS_PROPS | tr -d '[[:space:]]'|tr "," "\n")
+			for x in $tmp_arr
+			do
+    			tmp_arr2=$(echo $x | tr ":" "=") 
+				 printf '%s\n' "${tmp_arr2}" >> $appnodeConfigFile
+				 echo "set ${tmp_arr2}"
+			done
+		fi
+fi
 
 if [[ ${BW_ENGINE_THREADCOUNT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
