@@ -101,9 +101,9 @@ fi
 
 checkEnvSubstituteConfig()
 {
-if [[ ${BW_SYS_PROPS} ]]; then
+if [[ ${BW_JAVA_OPTS} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
-			tmp_arr=$(echo $BW_SYS_PROPS | tr -d '[[:space:]]'|tr "," "\n")
+			tmp_arr=$(echo $BW_JAVA_OPTS | tr -d '[[:space:]]'|tr "," "\n")
 			for x in $tmp_arr
 			do
 				 printf '%s\n' "${x}" >> $appnodeConfigFile
