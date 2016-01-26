@@ -101,14 +101,11 @@ fi
 
 checkEnvSubstituteConfig()
 {
+	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
 if [[ ${BW_JAVA_OPTS} ]]; then
-		if [ -e ${appnodeConfigFile} ]; then
-			tmp_arr=$(echo $BW_JAVA_OPTS | tr -d '[[:space:]]'|tr "," "\n")
-			for x in $tmp_arr
-			do
-				 printf '%s\n' "${x}" >> $appnodeConfigFile
-				 echo "set ${x}"
-			done
+		if [ -e ${bwappnodeTRA} ]; then
+			 sed -i.bak "/java.extended.properties/s/$/ $BW_JAVA_OPTS/" $bwappnodeTRA
+			 echo "appended $BW_JAVA_OPTS to java.extend.properties"
 		fi
 fi
 
