@@ -31,6 +31,7 @@ You can customize the buildpack to add supported third-party drivers e.g. Oracle
 *  **Provision TIBCO BusinessWorks™ Container Edition Plug-ins Runtime**: The TIBCO BusinessWorks™ Container Edition 1.0.1 release has added support for certified plug-ins. Contact `TIBCO Support` for list of all supported Plug-ins. To add plug-in runtime into your buildpack:
   * Download appropriate Plug-in packaging e.g. TIBCO ActiveMatrix BusinessWorks(TM) Plug-in for WebSphere MQ from https://edelivery.tibco.com
   * Locate Plug-in zip file e.g. bwmqplugin_8.4.0.zip file from the downloaded artifacts and copy into `<Your-local-buildpack-repo>/resources/addons/plugins`
+  * Copy any required OSGi bundles e.g. driver bundles into `<Your-local-buildpack-repo>/resources/addons/jars`
 
 Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create customized buildpack.
 
