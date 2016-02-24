@@ -75,17 +75,17 @@ checkJarsPalettes()
 {
 #check addon jars
 BW_VERSION=`ls $APPDIR/tibco.home/bw*/`
-
+BW_NAME=`ls $APPDIR/tibco.home/`
 jarFolder=$BUILD_PACK_DIR/resources/addons/jars
 if [ "$(ls $jarFolder)"  ]; then 
 	echo "Adding addional jars"
 	mkdir -p tibco.home/addons/runtime/plugins/ && cp -r $BUILD_PACK_DIR/resources/addons/jars/* "$_"	
-	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > tibco.home/bwcf/$BW_VERSION/ext/shared/addons.link
+	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > tibco.home/$BW_NAME/$BW_VERSION/ext/shared/addons.link
 fi
 pluginFolder=$BUILD_PACK_DIR/resources/addons/plugins
 if [ "$(ls $pluginFolder)"  ]; then 
 	echo "Adding addional plugins"
-	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > tibco.home/bwcf/$BW_VERSION/ext/shared/addons.link
+	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > tibco.home/$BW_NAME/$BW_VERSION/ext/shared/addons.link
 	# unzip whatever is there not done
 for name in $(find $pluginFolder -type f); 
 do	
