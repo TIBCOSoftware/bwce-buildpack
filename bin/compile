@@ -50,7 +50,7 @@ if [ -f ${manifest} ]; then
 	bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
 	res=$?
 	if [ ${res} -eq 0 ]; then
-		bwceTargetStr=`grep -E 'cf' $bwceTargetHeaderStr`
+		bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'cf'`
 		res2=$?
 		if [ ${res2} -eq 0 ]; then
 			echo ""
