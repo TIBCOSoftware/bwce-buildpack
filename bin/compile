@@ -44,7 +44,7 @@ if [ -f ${manifest} ]; then
 	if [ ${res} -eq 0 ]; then
 		echo " "
 	else
-		echo "Application [$bwBundleAppName] is not compatible with TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition from the TIBCO Business Studio."
+		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO BusinessWorks Container Edition Studio."
 		exit 1
 	fi
 	bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
@@ -55,7 +55,7 @@ if [ -f ${manifest} ]; then
 		if [ ${res2} -eq 0 ]; then
 			echo ""
 		else
-			echo "Application [$bwBundleAppName] is not developed for the CloudFoundry platform and cannot be deployed to the CloudFoundry. Make this application compatible with CloudFoundry platform using the TIBCO Business Studio."
+			echo "Application [$bwBundleAppName] is not supported on the CloudFoundry platform and cannot be started. You should convert this application using TIBCO BusinessWorks Container Edition Studio. Refer Application Development guide for more details."
 			exit 1
 		fi
 	fi
