@@ -487,7 +487,7 @@ public class ProfileTokenResolver {
                     StringBuffer sb = new StringBuffer();
                     while (m.find()) {
                         String var = m.group(1);
-                        String val = tokenMap.get(var);
+                        String val = tokenMap.containsKey(var)?tokenMap.get(var):tokenMap.get(var.toLowerCase());
                         if (val == null) {
                             String errMessage = "Value not found for Token [" + var + "].";
                             System.err.println(errMessage);
