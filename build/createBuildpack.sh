@@ -36,8 +36,8 @@ buildpackLocation=`get_abs_filename build/${buildpackName}.zip`
 
 cd build
 if [ "$3" == "-test" ]; then
-    sh uploadBuildpack.sh $buildpackLocation $buildpackName -test
+    ./uploadBuildpack.sh $buildpackLocation $buildpackName -test
 else
-    sh uploadBuildpack.sh $buildpackLocation $buildpackName
+     ./uploadBuildpack.sh $buildpackLocation $buildpackName
 fi
 echo ">>>>>>>>>> End time: $(date) <<<<<<<<<<<<"

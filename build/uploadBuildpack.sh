@@ -29,5 +29,5 @@ if [ "$3" == "-test" ]; then
         cd ..
     fi
     cd test
-    sh testBuildpack.sh ${buildpackName}
+    ./testBuildpack.sh ${buildpackName}
 fi
