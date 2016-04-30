@@ -59,6 +59,7 @@ if [ -f ${manifest} ]; then
 			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
 			res=$?
 			if [ ${res} -eq 0 ]; then
+				 echo "File palette in Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition."
 				 echo "Application [$bwBundleAppName] can not be deployed in CloudFoundry. Unsupported Palette[File] is used. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
 				 exit 1
 			fi
