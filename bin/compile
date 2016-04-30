@@ -53,16 +53,19 @@ if [ -f ${manifest} ]; then
 		bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
 		res2=$?
 		if [ ${res2} -eq 0 ]; then
-			unzip -o -q $BUILD_DIR/*.jar
-			MANIFESTMF=META-INF/MANIFEST.MF
-			fileFiler="bw.file"
-			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
-			res=$?
-			if [ ${res} -eq 0 ]; then
+			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+			do	
+				unzip -o -q $name
+				MANIFESTMF=META-INF/MANIFEST.MF
+				fileFiler="bw.file"
+				bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
+				res=$?
+				if [ ${res} -eq 0 ]; then
 				 echo "File palette in Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition."
 				 echo "Application [$bwBundleAppName] can not be deployed in CloudFoundry. Unsupported Palette[File] is used. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
 				 exit 1
-			fi
+				fi
+			done
 		fi
 	fi
 fi
