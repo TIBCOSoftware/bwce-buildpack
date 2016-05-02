@@ -14,7 +14,7 @@ These buildpack scripts are subject to the license shared as part of the reposit
   * [Login to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login).
     
 ##Download TIBCO BusinessWorks™ Container Edition
-Download appropriate TIBCO BusinessWorks™ Container Edition 1.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime(bwce.zip).
+Download appropriate TIBCO BusinessWorks™ Container Edition 1.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime(bwce_cf.zip).
      
 ##Create buildpack
    1. Clone this repository onto your local machine.
@@ -23,7 +23,7 @@ Download appropriate TIBCO BusinessWorks™ Container Edition 1.0.0 artifacts fr
 ##Buildpack Extension
 You can customize the buildpack to add supported third-party drivers e.g. Oracle JDBC driver, OSGified bundles or runtime of certified   Plug-ins in TIBCO BusinessWorks™ Container Edition runtime. It can also be customized for application certificate management as well as to integrate with application configuration management services.
 * **Provision suppprted JDBC drivers**:
-     * Follow steps described in "Using Third Party JDBC Drivers" on https://docs.tibco.com/pub/bwcf/1.0.0/doc/html/GUID-881316C3-28F9-4BCF-A512-38B731BE63D1.html.
+     * Run **bwinstall[.exe] help** from `<TIBCO_HOME>/bwce/2.x/bin` and follow instructions to add the driver to BWCE installation.
      * Copy the appropriate driver bundle from `<TIBCO_HOME>/bwcf/<version>/config/drivers/shells/<driverspecific runtime>/runtime/plugins/` to  `<Your-local-buildpack-repo>/resources/addons/jars` folder. 
 * **Provision [OSGi](https://www.osgi.org) bundle jar(s)**: Copy OSGified bundle jar(s) into `<Your-local-buildpack-repo>/resources/addons/jars`
 * **Application Configuration Management**: We support [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) (both as managed and as [CUPS](https://docs.cloudfoundry.org/devguide/services/user-provided.html)) and [Zuul Config](https://github.com/Confluex/Zuul/wiki) (as CUPS) management systems out of the box. Refer https://docs.tibco.com/pub/bwcf/1.0.0/doc/html/GUID-3AAEE4AD-8701-4F4E-AD7B-2416A9DDA260.html for CUPS support. To add support for other systems, update `<Your-local-buildpack-repo>/java-profile-token-resolver/ProfileTokenResolver.java`. This class has a dependecy on Jettison(1.3.3) JSON library. You can pull this dependency from the installation `<TIBCO_HOME>/bwcf/<version>/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison` or download it from the web.
