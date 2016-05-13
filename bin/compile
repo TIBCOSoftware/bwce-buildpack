@@ -16,16 +16,21 @@ if [ -f $1 ] ; then
     *.bz2)     bunzip2 $1;;
     *.rar)     unrar x $1;;
     *.tbz2)    tar xvjf $1;;
-    *.zip)     unzip $1;;
+    *.zip)     unzip -q $1;;
     *.Z)       uncompress $1;;
     *)         echo "can't extract from $1";;
   esac
 else
-  echo "no file called $1"
+		echo "no file called $1"
 fi
 }
 
-
+print_Debug()
+{
+		if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
+ 			echo $1 
+ 		fi
+}
 
 checkProfile()
 {
@@ -77,18 +82,14 @@ do
 	defaultProfile=$x;;esac	
 done
 
-if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
-	echo $defaultProfile
-fi
+print_Debug $defaultProfile
 
 if [ -z ${BW_PROFILE:=${defaultProfile}} ]; then echo "BW_PROFILE is unset. Set it to $defaultProfile"; 
 else 
 		case $BW_PROFILE in
  		*.substvar ) ;;
-		* ) BW_PROFILE="${BW_PROFILE}.substvar";;esac		
-    if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
-		echo "BW_PROFILE is set to '$BW_PROFILE'";
-	fi
+		* ) BW_PROFILE="${BW_PROFILE}.substvar";;esac		   
+		print_Debug "BW_PROFILE is set to '$BW_PROFILE'";
 fi
 }
 
@@ -98,13 +99,13 @@ checkJarsPalettes()
 BW_VERSION=`ls $APPDIR/tibco.home/bw*/`
 jarFolder=$BUILD_PACK_DIR/resources/addons/jars
 if [ "$(ls $jarFolder)"  ]; then 
-	echo "Adding addional jars"
+		print_Debug "Adding additional jars"
 	mkdir -p tibco.home/addons/runtime/plugins/ && cp -r $BUILD_PACK_DIR/resources/addons/jars/* "$_"	
 	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" >`echo tibco.home/bw*/*/ext/shared`/addons.link
 fi
 pluginFolder=$BUILD_PACK_DIR/resources/addons/plugins
 if [ "$(ls $pluginFolder)"  ]; then 
-	echo "Adding addional plugins"
+		print_Debug "Adding addional plugins"
 	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > `echo tibco.home/bw*/*/ext/shared`/addons.link
 	# unzip whatever is there not done
 for name in $(find $pluginFolder -type f); 
@@ -124,7 +125,7 @@ checkAgents()
 	agentFolder=$BUILD_PACK_DIR/resources/addons/monitor-agents
 
 	if [ "$(ls $agentFolder)"  ]; then 
-		echo "Adding monitoring jars"
+		print_Debug "Adding monitoring jars"
 
 		for name in $(find $agentFolder -type f); 
 do	
@@ -191,7 +192,9 @@ checkCerts()
 			# filter out hidden files
 			if [[  "$(basename $name )" != .* && "$(basename $name )" != *.jks ]];then
 				certsFile=$(basename $name )
-				echo "Importing $certsFile into java truststore"
+ 			 	print_Debug "Importing $certsFile into java truststore"
+
+				
   				aliasName="${certsFile%.*}"				
 				$jreLocation/bin/keytool -import -trustcacerts -keystore $certsStore -storepass changeit -noprompt -alias $aliasName -file $name
 			fi
@@ -209,13 +212,13 @@ export APPDIR=$BUILD_DIR
 
 checkProfile
 
-if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
-	echo "args: $1 $2"
-	echo "appdir is $APPDIR"
-	echo "build pack dir is $BUILD_PACK_DIR"
-	echo "build dir is $BUILD_DIR"
-	echo "cache dir is $CACHE_DIR"
-fi
+
+	print_Debug "args: $1 $2"
+	print_Debug "appdir is $APPDIR"
+	print_Debug "build pack dir is $BUILD_PACK_DIR"
+	print_Debug "build dir is $BUILD_DIR"
+	print_Debug "cache dir is $CACHE_DIR"
+
 
 cd $BUILD_DIR
 if [[ ${BW_LOGLEVEL} ]]; then
@@ -267,10 +270,6 @@ if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 	else
 			sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
 			#echo "The loglevel set to ERROR level"
-fi
-
-if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
-	ls -la
 fi
 
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
