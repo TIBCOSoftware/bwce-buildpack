@@ -38,6 +38,9 @@ sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config
 if [ "$(ls $APPDIR/tibco.home/bw*/*/ext/shared)"  ]; then 
 	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/ext/shared/addons.link	
 fi
+if [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
+	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
+fi
 
 
 if [[ ${BW_LOGLEVEL} ]]; then

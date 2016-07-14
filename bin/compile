@@ -120,6 +120,31 @@ done
 fi
 }
 
+
+
+checkLibs()
+{
+	BW_VERSION=`ls $APPDIR/tibco.home/bw*/`
+	libFolder=$BUILD_PACK_DIR/resources/addons/lib
+	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
+	if [ "$(ls $libFolder)"  ]; then
+		if [ -e ${bwappnodeTRA} ]; then
+			OPTS=" -Djava.library.path=_APPDIR_\\/tibco.home\\/addons\\/lib"
+			sed -i.bak "/java.extended.properties/s/$/ ${OPTS}/" $bwappnodeTRA
+		fi
+		print_Debug "Adding additional libs"
+		for name in $(find $libFolder -type f); 
+		do	
+			# filter out hidden files
+			if [[  "$(basename $name )" != .* ]];then
+				mkdir -p tibco.home/addons/lib/ 
+   				unzip $name -d tibco.home/addons/lib/ 
+   				ls tibco.home/addons/lib/ 
+   			fi
+		done
+	fi
+}
+
 checkAgents()
 {
 	agentFolder=$BUILD_PACK_DIR/resources/addons/monitor-agents
@@ -281,6 +306,7 @@ chmod 755 $BUILD_DIR/prestart.sh
 
 checkEnvSubstituteConfig
 checkJarsPalettes
+checkLibs
 checkAgents
 checkCerts
 
