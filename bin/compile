@@ -138,8 +138,7 @@ checkLibs()
 			# filter out hidden files
 			if [[  "$(basename $name )" != .* ]];then
 				mkdir -p tibco.home/addons/lib/ 
-   				unzip $name -d tibco.home/addons/lib/ 
-   				ls tibco.home/addons/lib/ 
+   				unzip -q $name -d tibco.home/addons/lib/ 
    			fi
 		done
 	fi
