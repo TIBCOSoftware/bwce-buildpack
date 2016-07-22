@@ -31,7 +31,7 @@ done
 fi
 }
 export APPDIR=/home/vcap/app
-export BW_KEYSTORE_DIR=$HOME/keystore
+export BW_KEYSTORE_PATH=$HOME/keystore
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/startBWAppNode.sh
 sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config.ini
