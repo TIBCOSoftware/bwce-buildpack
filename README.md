@@ -22,22 +22,22 @@ Download appropriate TIBCO BusinessWorks™ Container Edition 2.0.0 artifacts fr
 
 ##Buildpack Extension
 You can customize the buildpack to add supported third-party drivers e.g. Oracle JDBC driver, OSGified bundles or runtime of certified   Plug-ins in TIBCO BusinessWorks™ Container Edition runtime. It can also be customized for application certificate management as well as to integrate with application configuration management services.
-* **Provision suppprted JDBC drivers**:
+* **Provision suppported JDBC drivers**:
      * Run **bwinstall[.exe] help** from `<BWCE_HOME>/bin` and follow instructions to add the driver to BWCE installation.
      * Copy the appropriate driver bundle from `<BWCE_HOME>/config/drivers/shells/<driverspecific runtime>/runtime/plugins/` to  `<Your-local-buildpack-repo>/resources/addons/jars` folder. 
 * **Provision [OSGi](https://www.osgi.org) bundle jar(s)**: Copy OSGified bundle jar(s) into `<Your-local-buildpack-repo>/resources/addons/jars`
 * **Application Configuration Management**: We support [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) (both as managed and as [CUPS](https://docs.cloudfoundry.org/devguide/services/user-provided.html)) and [Zuul Config](https://github.com/Confluex/Zuul/wiki) (as CUPS) management systems out of the box. Refer https://docs.tibco.com/pub/bwce/2.0.0/doc/html/GUID-3AAEE4AD-8701-4F4E-AD7B-2416A9DDA260.html for CUPS support. To add support for other systems, update `<Your-local-buildpack-repo>/java-profile-token-resolver/ProfileTokenResolver.java`. This class has a dependecy on Jettison(1.3.3) JSON library. You can pull this dependency from the installation `<BWCE_HOME>/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison` or download it from the web.
 * **Certificate Management**: There are use cases where you need to use certificates into your application to connect to different systems. For example, a certificate to connect to SpringCloud config service or a certificate to connect to TIBCO Enterprise Message Service. Bundling certificates with your application is not a good idea as you would need to rebuild your application when the certificates expire. To avoid that, you can copy your certificates into the `<Your-local-buildpack-repo>/resources/addons/certs` folder. Once the certificates expire, you can copy the new certificates into the buildpack without rebuilding your application. Just push your application with the new buildpack. To access the certificates folder from your application, use the environment variable [BW_KEYSTORE_PATH]. For example, #BW_KEYSTORE_PATH#/mycert.jks in your application property.
 *  **Provision TIBCO BusinessWorks™ Container Edition Plug-in Runtime**: 
-   * TIBCO Certified Plug-Ins: The TIBCO BusinessWorks™ Container Edition 1.0.1 and above release has added support for certified plug-ins. Contact `TIBCO Support` for list of all supported Plug-ins. To add plug-in runtime into your buildpack:
-     * Download appropriate Plug-in packaging e.g. TIBCO ActiveMatrix BusinessWorks(TM) Plug-in for WebSphere MQ from https://edelivery.tibco.com
-     * Locate Plug-in zip file e.g. `<ProductID>_ePaas.zip` or `TIB_<ProductID>_<ProductionVersion>_<BuildNumber>_bwce-runtime.zip` file from the downloaded artifacts and copy into `<Your-local-buildpack-repo>/resources/addons/plugins`
-  * Plug-ins created using [TIBCO ActiveMatrix BusinessWorks™ Plug-in Development Kit](https://docs.tibco.com/products/tibco-activematrix-businessworks-plug-in-development-kit-6-1-1): For Plug-ins created using [TIBCO ActiveMatrix BusinessWorks™ Plug-in Development Kit](https://docs.tibco.com/products/tibco-activematrix-businessworks-plug-in-development-kit-6-1-1), their runtime must be added to the buildpack. To add Plug-in runtime into your buildpack:
+   * TIBCO Certified Plug-Ins: The TIBCO BusinessWorks™ Container Edition 1.0.1 and above release has added support for certified plug-ins. Contact `TIBCO Support` for list of all supported plug-ins. To add a plug-in runtime into your buildpack:
+     * Download appropriate the plug-in packaging e.g. TIBCO ActiveMatrix BusinessWorks(TM) Plug-in for WebSphere MQ from https://edelivery.tibco.com
+     * Locate the plug-in zip file e.g. `<ProductID>_ePaas.zip` or `TIB_<ProductID>_<ProductionVersion>_<BuildNumber>_bwce-runtime.zip` file from the downloaded artifacts and copy into `<Your-local-buildpack-repo>/resources/addons/plugins`
+  * Plug-ins created using [TIBCO ActiveMatrix BusinessWorks™ Plug-in Development Kit](https://docs.tibco.com/products/tibco-activematrix-businessworks-plug-in-development-kit-6-1-1): For Plug-ins created using [TIBCO ActiveMatrix BusinessWorks™ Plug-in Development Kit](https://docs.tibco.com/products/tibco-activematrix-businessworks-plug-in-development-kit-6-1-1), their runtime must be added to the buildpack. To add the plug-in runtime into your buildpack:
      * [Install Plug-In](https://docs.tibco.com/pub/bwpdk/6.1.1/doc/html/GUID-0FB70A84-DBF6-4EE6-A6C8-28AC5E4FF1FF.html) if not already installed
-     * Goto `<TIBCO-HOME>/bwce/palettes/<plugin-name>/<plugin-version>` directory and  zip `lib` and `runtime` folders into `<plugin-name>.zip` file. Copy `<plugin-name>.zip` into `<Your-local-buildpack-repo>/resources/addons/plugins` folder.
-  * Copy any OSGi bundles required by Plug-in e.g. Thirdparty Driver bundles etc. into `<Your-local-buildpack-repo>/resources/addons/jars`
+     * Navigate to the `<TIBCO-HOME>/bwce/palettes/<plugin-name>/<plugin-version>` directory and  zip `lib` and `runtime` folders into `<plugin-name>.zip` file. Copy `<plugin-name>.zip` into `<Your-local-buildpack-repo>/resources/addons/plugins` folder.
+  * Copy any OSGi bundles required by the plug-in e.g. Thirdparty Driver bundles etc. into `<Your-local-buildpack-repo>/resources/addons/jars`
 
-Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create customized buildpack.
+Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create the customized buildpack.
 
 ##Push buildpack to CloudFoundry environment
   * Login to your Cloud Foundry environment
