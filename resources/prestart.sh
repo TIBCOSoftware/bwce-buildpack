@@ -33,6 +33,8 @@ fi
 export APPDIR=/home/vcap/app
 export BW_KEYSTORE_PATH=$HOME/keystore
 export MALLOC_ARENA_MAX=4
+export MALLOC_MMAP_THRESHOLD_=1024
+export MALLOC_MMAP_MAX_=None
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/startBWAppNode.sh
 sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config.ini
