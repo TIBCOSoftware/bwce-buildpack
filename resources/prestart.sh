@@ -3,16 +3,6 @@
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
 
-checkWrapper ()
-{
-
-	if [ -f $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh ]; then
-    	return 0
-    else 
-    	return 1
-	fi
-}
-
 printBWTable ()
 {
 	echo "---------------> Product Inventory"
@@ -42,28 +32,18 @@ fi
 }
 export APPDIR=/home/vcap/app
 export BW_KEYSTORE_PATH=$HOME/keystore
-export MALLOC_ARENA_MAX=4
+export MALLOC_ARENA_MAX=2
 export MALLOC_MMAP_THRESHOLD_=1024
-export MALLOC_MMAP_MAX_=None
+export MALLOC_TRIM_THRESHOLD_=1024
+export MALLOC_MMAP_MAX_=65536
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/startBWAppNode.sh
 sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config.ini
 if [ "$(ls $APPDIR/tibco.home/bw*/*/ext/shared)"  ]; then 
 	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/ext/shared/addons.link	
 fi
 
-
-
-checkWrapper
-res=$?
-if [ $res == "0" ]; then
-	chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
-	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
-else
-	chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
-	if [ -d ${$APPDIR/tibco.home/addons/lib} ] && [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
-		sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
-	fi
-fi
+chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
+sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
 
 if [[ ${BW_LOGLEVEL} ]]; then
 	echo "Before substitution...."

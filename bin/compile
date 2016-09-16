@@ -164,35 +164,27 @@ done
 
 }
 
+
 checkWrapper ()
 {
 
-	if [ -f $APPDIR/tibco.home/tibco.home/bw*/*/bin/bwadpppnode.script.sh ]; then
-    	return 0
-    else 
-    	return 1
+	if [ -f tibco.home/bw*/*/bin/bwappnode.script.sh ]; then
+		TIBCO_BIN_PATH=`echo tibco.home/bw*/*/bin`
+		ln -s $TIBCO_BIN_PATH/bwappnode.script.sh $TIBCO_BIN_PATH/bwappnode.tra
+		ln -s $TIBCO_BIN_PATH/bwappnode.tra $TIBCO_BIN_PATH/bwappnode
 	fi
 }
+
 
 checkEnvSubstituteConfig()
 {
 	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
 	bwappnodeScript=tibco.home/bw*/*/bin/bwappnode.script.sh
 if [[ ${BW_JAVA_OPTS} ]]; then
-	checkWrapper
-	res=$?
-	if [ $res == "0" ]; then
-		if [ -e ${bwappnodeScript} ]; then
-			sed -i.bak "/-XX:+UseG1GC/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeScript
-			echo "Appended $BW_JAVA_OPTS to java.extend.properties"
-		fi
-	else
 		if [ -e ${bwappnodeTRA} ]; then
 			 sed -i.bak "/java.extended.properties/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeTRA
 			 echo "Appended $BW_JAVA_OPTS to java.extend.properties"
 		fi
-	
-	fi
 fi
 
 if [[ ${BW_ENGINE_THREADCOUNT} ]]; then
@@ -323,7 +315,7 @@ if [ -f $BUILD_PACK_DIR/resources/addons/certs/*.jks  ]; then
 	mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/*.jks $BUILD_DIR/keystore
 fi
 chmod 755 $BUILD_DIR/prestart.sh
-
+checkWrapper
 checkEnvSubstituteConfig
 checkJarsPalettes
 checkLibs
