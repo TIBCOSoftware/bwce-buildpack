@@ -3,6 +3,16 @@
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
 
+checkWrapper ()
+{
+
+	if [ -f $APPDIR/tibco.home/bw*/*/bin/startBWAppNodeScript.sh ]; then
+    	return 0
+    else 
+    	return 1
+	fi
+}
+
 printBWTable ()
 {
 	echo "---------------> Product Inventory"
@@ -41,10 +51,19 @@ sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config
 if [ "$(ls $APPDIR/tibco.home/bw*/*/ext/shared)"  ]; then 
 	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/ext/shared/addons.link	
 fi
-if [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
-	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
-fi
 
+
+
+checkWrapper
+res=$?
+if [ $res == "0" ]; then
+	chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
+	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
+else
+	if [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
+		sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
+	fi
+fi
 
 if [[ ${BW_LOGLEVEL} ]]; then
 	echo "Before substitution...."

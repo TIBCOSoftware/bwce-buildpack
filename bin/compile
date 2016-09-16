@@ -164,14 +164,35 @@ done
 
 }
 
+checkWrapper ()
+{
+
+	if [ -f $APPDIR/tibco.home/tibco.home/bw*/*/bin/startBWAppNodeScript.sh ]; then
+    	return 0
+    else 
+    	return 1
+	fi
+}
+
 checkEnvSubstituteConfig()
 {
 	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
+	bwappnodeScript=tibco.home/bw*/*/bin/bwappnode.script.sh
 if [[ ${BW_JAVA_OPTS} ]]; then
+	checkWrapper
+	res=$?
+	if [ $res == "0" ]; then
+		if [ -e ${bwappnodeScript} ]; then
+			sed -i.bak "/-XX:+UseG1GC/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeScript
+			echo "Appended $BW_JAVA_OPTS to java.extend.properties"
+		fi
+	else
 		if [ -e ${bwappnodeTRA} ]; then
 			 sed -i.bak "/java.extended.properties/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeTRA
 			 echo "Appended $BW_JAVA_OPTS to java.extend.properties"
 		fi
+	
+	fi
 fi
 
 if [[ ${BW_ENGINE_THREADCOUNT} ]]; then
