@@ -6,7 +6,7 @@
 checkWrapper ()
 {
 
-	if [ -f $APPDIR/tibco.home/bw*/*/bin/bwadpppnode.script.sh ]; then
+	if [ -f $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh ]; then
     	return 0
     else 
     	return 1
