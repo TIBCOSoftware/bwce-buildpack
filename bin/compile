@@ -167,7 +167,7 @@ done
 checkWrapper ()
 {
 
-	if [ -f $APPDIR/tibco.home/tibco.home/bw*/*/bin/startBWAppNodeScript.sh ]; then
+	if [ -f $APPDIR/tibco.home/tibco.home/bw*/*/bin/bwadpppnode.script.sh ]; then
     	return 0
     else 
     	return 1
