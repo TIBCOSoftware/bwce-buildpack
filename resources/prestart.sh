@@ -45,7 +45,6 @@ export BW_KEYSTORE_PATH=$HOME/keystore
 export MALLOC_ARENA_MAX=4
 export MALLOC_MMAP_THRESHOLD_=1024
 export MALLOC_MMAP_MAX_=None
-chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/startBWAppNode.sh
 sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config.ini
 if [ "$(ls $APPDIR/tibco.home/bw*/*/ext/shared)"  ]; then 
@@ -60,6 +59,7 @@ if [ $res == "0" ]; then
 	chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
 	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
 else
+	chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
 	if [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
 		sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
 	fi
