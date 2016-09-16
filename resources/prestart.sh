@@ -60,7 +60,7 @@ if [ $res == "0" ]; then
 	sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh
 else
 	chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
-	if [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
+	if [ -d ${$APPDIR/tibco.home/addons/lib} ] && [ "$(ls $APPDIR/tibco.home/addons/lib)"  ]; then 
 		sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
 	fi
 fi
