@@ -164,18 +164,6 @@ done
 
 }
 
-
-checkWrapper ()
-{
-
-	if [ -f tibco.home/bw*/*/bin/bwappnode.script.sh ]; then
-		TIBCO_BIN_PATH=`echo tibco.home/bw*/*/bin`
-		ln -s $TIBCO_BIN_PATH/bwappnode.script.sh $TIBCO_BIN_PATH/bwappnode.tra
-		ln -s $TIBCO_BIN_PATH/bwappnode.tra $TIBCO_BIN_PATH/bwappnode
-	fi
-}
-
-
 checkEnvSubstituteConfig()
 {
 	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
@@ -315,7 +303,6 @@ if [ -f $BUILD_PACK_DIR/resources/addons/certs/*.jks  ]; then
 	mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/*.jks $BUILD_DIR/keystore
 fi
 chmod 755 $BUILD_DIR/prestart.sh
-checkWrapper
 checkEnvSubstituteConfig
 checkJarsPalettes
 checkLibs
