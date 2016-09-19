@@ -3,17 +3,6 @@
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
 
-
-checkWrapper ()
-{
-
-	if [ -f $APPDIR/tibco.home/bw*/*/bin/bwappnode.script.sh ]; then
-		TIBCO_BIN_PATH=`echo $APPDIR/tibco.home/bw*/*/bin`
-		ln -s $TIBCO_BIN_PATH/bwappnode.script.sh $TIBCO_BIN_PATH/bwappnode.tra
-		ln -s $TIBCO_BIN_PATH/bwappnode.tra $TIBCO_BIN_PATH/bwappnode
-	fi
-}
-
 printBWTable ()
 {
 	echo "---------------> Product Inventory"
@@ -47,7 +36,6 @@ export MALLOC_ARENA_MAX=2
 export MALLOC_MMAP_THRESHOLD_=1024
 export MALLOC_TRIM_THRESHOLD_=1024
 export MALLOC_MMAP_MAX_=65536
-checkWrapper
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/startBWAppNode.sh
 sed -i.bak "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/config/appnode_config.ini
 if [ "$(ls $APPDIR/tibco.home/bw*/*/ext/shared)"  ]; then 
