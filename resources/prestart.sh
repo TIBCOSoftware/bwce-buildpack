@@ -44,6 +44,7 @@ fi
 
 chmod 755 $APPDIR/tibco.home/bw*/*/bin/bwappnode
 sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode.tra	
+sed -i "s#_APPDIR_#$APPDIR#g" $APPDIR/tibco.home/bw*/*/bin/bwappnode
 
 if [[ ${BW_LOGLEVEL} ]]; then
 	echo "Before substitution...."
