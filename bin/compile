@@ -226,6 +226,17 @@ checkCerts()
 
 }
 
+memoryCalculator()
+{
+	if [[ ${MEMORY_LIMIT} ]]; then
+		memory_Number=`echo $MEMORY_LIMIT | sed 's/m$//'`
+		configured_MEM=$((($memory_Number*67+50)/100))
+		thread_Stack=$((memory_Number))
+		JAVA_PARAM="-Xmx"$configured_MEM"M -Xms128M -Xss"$thread_Stack"K"
+		export BW_JAVA_OPTS=$JAVA_PARAM" "$BW_JAVA_OPTS
+	fi
+}
+
 addPCFCert()
 {
 	openssl_install=`echo $(which openssl)`
@@ -331,7 +342,7 @@ if [ -f $BUILD_PACK_DIR/resources/addons/certs/*.jks  ]; then
 	mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/*.jks $BUILD_DIR/keystore
 fi
 chmod 755 $BUILD_DIR/prestart.sh
-
+memoryCalculator
 checkEnvSubstituteConfig
 checkJarsPalettes
 checkLibs
