@@ -337,10 +337,8 @@ fi
 
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
 cp $BUILD_PACK_DIR/java-profile-token-resolver/ProfileTokenResolver.java $BUILD_DIR
+mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/. $BUILD_DIR/keystore
 
-if [ -f $BUILD_PACK_DIR/resources/addons/certs/*.jks  ]; then 
-	mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/*.jks $BUILD_DIR/keystore
-fi
 chmod 755 $BUILD_DIR/prestart.sh
 memoryCalculator
 checkEnvSubstituteConfig
