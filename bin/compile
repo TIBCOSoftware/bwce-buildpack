@@ -169,7 +169,6 @@ checkEnvSubstituteConfig()
 if [[ ${BW_JAVA_OPTS} ]]; then
 		if [ -e ${bwappnodeTRA} ]; then
 			 sed -i.bak "/java.extended.properties/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeTRA
-			 echo "Appended $BW_JAVA_OPTS to java.extend.properties"
 		fi
 fi
 
