@@ -6,122 +6,122 @@
 
 extract ()
 {
-if [ -f $1 ] ; then
-  case $1 in
-    *.tar.gz)  tar xvfz $1;;
-    *.gz)      gunzip $1;;
-    *.tar)     tar xvf $1;;
-    *.tgz)     tar xvzf $1;;
-    *.tar.bz2) tar xvjf $1;;
-    *.bz2)     bunzip2 $1;;
-    *.rar)     unrar x $1;;
-    *.tbz2)    tar xvjf $1;;
-    *.zip)     unzip -q $1;;
-    *.Z)       uncompress $1;;
-    *)         echo "can't extract from $1";;
-  esac
-else
+	if [ -f $1 ] ; then
+  		case $1 in
+   		*.tar.gz)  tar xvfz $1;;
+    		*.gz)      gunzip $1;;
+    		*.tar)     tar xvf $1;;
+    		*.tgz)     tar xvzf $1;;
+    		*.tar.bz2) tar xvjf $1;;
+    		*.bz2)     bunzip2 $1;;
+    		*.rar)     unrar x $1;;
+    		*.tbz2)    tar xvjf $1;;
+    		*.zip)     unzip -q $1;;
+    		*.Z)       uncompress $1;;
+    		*)         echo "can't extract from $1";;
+  		esac
+	else
 		echo "no file called $1"
-fi
+	fi
 }
 
 print_Debug()
 {
-		if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
- 			echo $1 
- 		fi
+	if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
+ 		echo $1 
+ 	fi
 }
 
 checkProfile()
 {
 
-defaultProfile=default.substvar
-manifest=$BUILD_DIR/META-INF/MANIFEST.MF
-bwAppConfig="TIBCO-BW-ConfigProfile"
-bwAppNameHeader="Bundle-SymbolicName"
-bwEdition='bwcf'
-bwceTarget='TIBCO-BWCE-Edition-Target:'
-if [ -f ${manifest} ]; then
-	bwAppProfileStr=`grep -o $bwAppConfig.*.substvar ${manifest}`
-	bwBundleAppName=`while read line; do printf "%q\n" "$line"; done<${manifest} | awk '/.*:/{printf "%s%s", (NR==1)?"":RS,$0;next}{printf "%s", FS $0}END{print ""}' | grep -o $bwAppNameHeader.* | cut -d ":" -f2 | tr -d '[[:space:]]' | sed "s/\\\\\r'//g" | sed "s/$'//g"`		
-    if [ "$DISABLE_BWCE_EAR_VALIDATION" != true ]; then
-        bwEditionHeaderStr=`grep -E $bwEdition ${manifest}`
-       res=$?
-       if [ ${res} -eq 0 ]; then
-          echo " "
-       else
-          echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO BusinessWorks Container Edition Studio. Refer Conversion Guide for more details."
-          exit 1
-       fi
-       bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
-       res=$?
-       if [ ${res} -eq 0 ]; then
-          bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
-          res2=$?
-          if [ ${res2} -eq 0 ]; then
-            for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
-            do  
-                unzip -o -q $name
-                MANIFESTMF=META-INF/MANIFEST.MF
-                fileFiler="bw.file"
-                bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
-                res=$?
-                if [ ${res} -eq 0 ]; then
-                 echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
-                 exit 1
-                fi
-            done
-          fi
-       fi
-    else
-           print_Debug "Validation disabled."
+	defaultProfile=default.substvar
+	manifest=$BUILD_DIR/META-INF/MANIFEST.MF
+	bwAppConfig="TIBCO-BW-ConfigProfile"
+	bwAppNameHeader="Bundle-SymbolicName"
+	bwEdition='bwcf'
+	bwceTarget='TIBCO-BWCE-Edition-Target:'
+	if [ -f ${manifest} ]; then
+		bwAppProfileStr=`grep -o $bwAppConfig.*.substvar ${manifest}`
+		bwBundleAppName=`while read line; do printf "%q\n" "$line"; done<${manifest} | awk '/.*:/{printf "%s%s", (NR==1)?"":RS,$0;next}{printf "%s", FS $0}END{print ""}' | grep -o $bwAppNameHeader.* | cut -d ":" -f2 | tr -d '[[:space:]]' | sed "s/\\\\\r'//g" | sed "s/$'//g"`		
+    	if [ "$DISABLE_BWCE_EAR_VALIDATION" != true ]; then
+        	bwEditionHeaderStr=`grep -E $bwEdition ${manifest}`
+       		res=$?
+       		if [ ${res} -eq 0 ]; then
+          		echo " "
+       		else
+          		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO BusinessWorks Container Edition Studio. Refer Conversion Guide for more details."
+          		exit 1
+       		fi
+       		bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
+       		res=$?
+       		if [ ${res} -eq 0 ]; then
+          		bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
+          		res2=$?
+          		if [ ${res2} -eq 0 ]; then
+            			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+            			do  
+                			unzip -o -q $name
+                			MANIFESTMF=META-INF/MANIFEST.MF
+                			fileFiler="bw.file"
+                			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
+                			res=$?
+                			if [ ${res} -eq 0 ]; then
+                 				echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
+                 				exit 1
+                			fi
+            			done
+          		fi
+       		fi
+    		else
+           		print_Debug "Validation disabled."
 
-    fi
-fi
-arr=$(echo $bwAppProfileStr | tr "/" "\n")
+    		fi
+	fi
+	arr=$(echo $bwAppProfileStr | tr "/" "\n")
 
-for x in $arr
-do
-    case "$x" in 
-	*substvar)
-	defaultProfile=$x;;esac	
-done
+	for x in $arr
+	do
+    		case "$x" in 
+		*substvar)
+		defaultProfile=$x;;esac	
+	done
 
-print_Debug $defaultProfile
+	print_Debug $defaultProfile
 
-if [ -z ${BW_PROFILE:=${defaultProfile}} ]; then echo "BW_PROFILE is unset. Set it to $defaultProfile"; 
-else 
+	if [ -z ${BW_PROFILE:=${defaultProfile}} ]; then echo "BW_PROFILE is unset. Set it to $defaultProfile"; 
+	else 
 		case $BW_PROFILE in
  		*.substvar ) ;;
 		* ) BW_PROFILE="${BW_PROFILE}.substvar";;esac		   
 		print_Debug "BW_PROFILE is set to '$BW_PROFILE'";
-fi
+	fi
 }
 
 checkJarsPalettes()
 {
-#check addon jars
-BW_VERSION=`ls $APPDIR/tibco.home/bw*/`
-jarFolder=$BUILD_PACK_DIR/resources/addons/jars
-if [ -d ${jarFolder} ] && [ "$(ls $jarFolder)"  ]; then 
-	print_Debug "Adding additional jars"
-	cp -r $BUILD_PACK_DIR/resources/addons/jars/* `echo tibco.home/bw*/*`/system/hotfix/shared
-fi
-pluginFolder=$BUILD_PACK_DIR/resources/addons/plugins
-if [ -d ${pluginFolder} ] && [ "$(ls $pluginFolder)"  ]; then 
-		print_Debug "Adding Plug-in Jars"
-	echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > `echo tibco.home/bw*/*/ext/shared`/addons.link
-	# unzip whatever is there not done
-for name in $(find $pluginFolder -type f); 
-do	
-	# filter out hidden files
-	if [[  "$(basename $name )" != .* ]];then
-   		extract $name
-		mkdir -p tibco.home/addons/runtime/plugins/ && mv runtime/plugins/* "$_"
-		mkdir -p tibco.home/addons/lib/ && mv lib/* "$_"/${name##*/}.ini
+	#check addon jars
+	BW_VERSION=`ls $APPDIR/tibco.home/bw*/`
+	jarFolder=$BUILD_PACK_DIR/resources/addons/jars
+	if [ -d ${jarFolder} ] && [ "$(ls $jarFolder)"  ]; then 
+		print_Debug "Adding additional jars"
+		cp -r $BUILD_PACK_DIR/resources/addons/jars/* `echo tibco.home/bw*/*`/system/hotfix/shared
 	fi
-done
-fi
+	pluginFolder=$BUILD_PACK_DIR/resources/addons/plugins
+	if [ -d ${pluginFolder} ] && [ "$(ls $pluginFolder)"  ]; then 
+		print_Debug "Adding Plug-in Jars"
+		echo -e "name=Addons Factory\ntype=bw6\nlayout=bw6ext\nlocation=_APPDIR_/tibco.home/addons" > `echo tibco.home/bw*/*/ext/shared`/addons.link
+		# unzip whatever is there not done
+		for name in $(find $pluginFolder -type f); 
+		do	
+		# filter out hidden files
+			if [[  "$(basename $name )" != .* ]];then
+   				extract $name
+				mkdir -p tibco.home/addons/runtime/plugins/ && mv runtime/plugins/* "$_"
+				mkdir -p tibco.home/addons/lib/ && mv lib/* "$_"/${name##*/}.ini
+			fi
+		done
+	fi
 }
 
 
@@ -151,54 +151,52 @@ checkAgents()
 		print_Debug "Adding monitoring jars"
 
 		for name in $(find $agentFolder -type f); 
-do	
-	# filter out hidden files
-	if [[  "$(basename $name )" != .* ]];then
-		mkdir -p agent/
-   		unzip -q $name -d agent/
+		do	
+		# filter out hidden files
+		if [[  "$(basename $name )" != .* ]];then
+			mkdir -p agent/
+   			unzip -q $name -d agent/
+		fi
+		done	
 	fi
-done
-		
-	fi
-
 }
 
 checkEnvSubstituteConfig()
 {
 	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
-if [[ ${BW_JAVA_OPTS} ]]; then
+	if [[ ${BW_JAVA_OPTS} ]]; then
 		if [ -e ${bwappnodeTRA} ]; then
 			 sed -i.bak "/java.extended.properties/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeTRA
 		fi
-fi
+	fi
 
-if [[ ${BW_ENGINE_THREADCOUNT} ]]; then
+	if [[ ${BW_ENGINE_THREADCOUNT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			printf '%s\n' "bw.engine.threadCount=$BW_ENGINE_THREADCOUNT" >> $appnodeConfigFile
 			echo "Set BW_ENGINE_THREADCOUNT to $BW_ENGINE_THREADCOUNT"
 		fi
-fi
-if [[ ${BW_ENGINE_STEPCOUNT} ]]; then
+	fi
+	if [[ ${BW_ENGINE_STEPCOUNT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			printf '%s\n' "bw.engine.stepCount=$BW_ENGINE_STEPCOUNT" >> $appnodeConfigFile
 			echo "Set BW_ENGINE_STEPCOUNT to $BW_ENGINE_STEPCOUNT"
 		fi
-fi
-if [[ ${BW_APPLICATION_JOB_FLOWLIMIT} ]]; then
+	fi
+	if [[ ${BW_APPLICATION_JOB_FLOWLIMIT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 
 			printf '%s\n' "bw.application.job.flowlimit.$bwBundleAppName=$BW_APPLICATION_JOB_FLOWLIMIT" >> $appnodeConfigFile
 			echo "Set BW_APPLICATION_JOB_FLOWLIMIT to $BW_APPLICATION_JOB_FLOWLIMIT"
 		fi
-fi
-
-if [[  $BW_LOGLEVEL = "DEBUG" ]]; then
-	if [[ ${BW_APPLICATION_JOB_FLOWLIMIT} ]] || [[ ${BW_ENGINE_STEPCOUNT} ]] || [[ ${BW_ENGINE_THREADCOUNT} ]]; then
-		echo "---------------------------------------"
-		cat $appnodeConfigFile
-		echo "---------------------------------------"
 	fi
-fi
+
+	if [[  $BW_LOGLEVEL = "DEBUG" ]]; then
+		if [[ ${BW_APPLICATION_JOB_FLOWLIMIT} ]] || [[ ${BW_ENGINE_STEPCOUNT} ]] || [[ ${BW_ENGINE_THREADCOUNT} ]]; then
+			echo "---------------------------------------"
+			cat $appnodeConfigFile
+			echo "---------------------------------------"
+		fi
+	fi
 }
 
 checkCerts()
@@ -268,28 +266,19 @@ echo "Running BWCE buildpack"
 BUILD_DIR=$1
 CACHE_DIR=$2
 BUILD_PACK_DIR=$(dirname $(dirname $0))
-
-
 export APPDIR=$BUILD_DIR
-
 checkProfile
-
-
-	print_Debug "args: $1 $2"
-	print_Debug "appdir is $APPDIR"
-	print_Debug "build pack dir is $BUILD_PACK_DIR"
-	print_Debug "build dir is $BUILD_DIR"
-	print_Debug "cache dir is $CACHE_DIR"
-
-
+print_Debug "args: $1 $2"
+print_Debug "appdir is $APPDIR"
+print_Debug "build pack dir is $BUILD_PACK_DIR"
+print_Debug "build dir is $BUILD_DIR"
+print_Debug "cache dir is $CACHE_DIR"
 cd $BUILD_DIR
 if [[ ${BW_LOGLEVEL} ]]; then
 	ls -la
 fi
 
-
 profileFile=`ls | grep "substvar"`
-
 if [ -s ${profileFile} -a  $profileFile ]; then
 	BW_PROFILE=$profileFile
 	echo "Overwriting BW_PROFILE to $profileFile"
@@ -325,13 +314,13 @@ logback=tibco.home/bw*/*/config/logback.xml
 appnodeConfigFile=tibco.home/bw*/*/config/appnode_config.ini
 
 if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
-		if [ -e ${logback} ]; then
-			sed -i.bak "/<root/ s/\".*\"/\"$BW_LOGLEVEL\"/Ig" $logback
-			echo "The loglevel is set to $BW_LOGLEVEL level"
-		fi
+	if [ -e ${logback} ]; then
+		sed -i.bak "/<root/ s/\".*\"/\"$BW_LOGLEVEL\"/Ig" $logback
+		echo "The loglevel is set to $BW_LOGLEVEL level"
+	fi
 	else
-			sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
-			#echo "The loglevel set to ERROR level"
+		sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
+		#echo "The loglevel set to ERROR level"
 fi
 
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
