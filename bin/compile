@@ -98,6 +98,27 @@ checkProfile()
 	fi
 }
 
+checkThirdPartyInstallations()
+{
+	installFolder=$BUILD_PACK_DIR/resources/addons/thirdparty-installs
+	if [ -d ${pluginFolder} ] && [ "$(ls $pluginFolder)"  ]; then
+		mkdir -p tibco.home/thirdparty-installs
+		for f in "$installFolder"/*; do
+      		if [ -d $f ]
+      		then
+                cp -R "$f" tibco.home/thirdparty-installs
+      		else
+              	if [ "${f##*.}" == "zip" ]       
+              	then
+                    unzip -q "$f" -d tibco.home/thirdparty-installs/$(basename "$f" .zip);
+                else
+                   echo "Can not unzip $f. Not a valid ZIP file"    
+              	fi
+      		fi
+		done;
+	fi	
+}
+
 checkJarsPalettes()
 {
 	#check addon jars
@@ -335,4 +356,5 @@ checkLibs
 checkAgents
 checkCerts
 addPCFCert
+checkThirdPartyInstallations
 # eof

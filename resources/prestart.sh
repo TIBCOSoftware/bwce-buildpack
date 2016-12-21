@@ -41,6 +41,34 @@ checkJAVAHOME()
 			export JAVA_HOME=$APPDIR/tibco.home/$jreLink
  		fi
 }
+
+checkThirdPartyInstallation() 
+{
+	INSTALL_DIR=$APPDIR/tibco.home/thirdparty-installs
+	echo "Start Install Dir"
+	for f in "$INSTALL_DIR"/*; do
+		echo "${f}"
+      	if [ -d $f ]
+      	then
+            if [ -d "$f"/lib ]; then
+            	echo "Setting LD_LIBRARY_PATH"
+                export LD_LIBRARY_PATH="$f"/lib:$LD_LIBRARY_PATH
+                echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+            fi	
+      		
+      		setupFile=`ls "$f"/*.sh`
+      		echo "Setup File Loc:${setupFile}"
+      		if [ -f "$setupFile" ]; then
+      			echo "In setupFile"
+      		    chmod 755 "$setupFile" 
+      		    source "$setupFile" "$f"
+      		    echo $TUXDIR
+      		fi	
+      	fi
+	done;
+	echo "End Install Dir"
+}
+
 export APPDIR=/home/vcap/app
 export BW_KEYSTORE_PATH=$HOME/keystore
 export MALLOC_ARENA_MAX=2
@@ -76,7 +104,10 @@ if grep -q BW.CLOUD.PORT "$APPDIR/tmp/pcf.substvar"; then
 fi
 
 export JETTISON_JAR=`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison*/jettison*.jar`
+
 checkJAVAHOME
+checkThirdPartyInstallation
+
 $JAVA_HOME/bin/javac -cp $JETTISON_JAR:.:$JAVA_HOME/lib ProfileTokenResolver.java
 $JAVA_HOME/bin/java -cp $JETTISON_JAR:.:$JAVA_HOME/lib ProfileTokenResolver
 
