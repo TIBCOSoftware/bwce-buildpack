@@ -45,28 +45,22 @@ checkJAVAHOME()
 checkThirdPartyInstallation() 
 {
 	INSTALL_DIR=$APPDIR/tibco.home/thirdparty-installs
-	echo "Start Install Dir"
-	for f in "$INSTALL_DIR"/*; do
-		echo "${f}"
-      	if [ -d $f ]
-      	then
-            if [ -d "$f"/lib ]; then
-            	echo "Setting LD_LIBRARY_PATH"
-                export LD_LIBRARY_PATH="$f"/lib:$LD_LIBRARY_PATH
-                echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-            fi	
+	if [ -d "$INSTALL_DIR" ]; then
+		for f in "$INSTALL_DIR"/*; do
+      		if [ -d $f ]
+      		then
+            	if [ -d "$f"/lib ]; then
+                	export LD_LIBRARY_PATH="$f"/lib:$LD_LIBRARY_PATH
+            	fi	
       		
-      		setupFile=`ls "$f"/*.sh`
-      		echo "Setup File Loc:${setupFile}"
-      		if [ -f "$setupFile" ]; then
-      			echo "In setupFile"
-      		    chmod 755 "$setupFile" 
-      		    source "$setupFile" "$f"
-      		    echo $TUXDIR
-      		fi	
-      	fi
-	done;
-	echo "End Install Dir"
+      			setupFile=`ls "$f"/*.sh`
+      			if [ -f "$setupFile" ]; then
+      		    	chmod 755 "$setupFile" 
+      		    	source "$setupFile" "$f"
+      			fi	
+      		fi
+		done;
+	fi
 }
 
 export APPDIR=/home/vcap/app
