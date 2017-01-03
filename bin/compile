@@ -101,7 +101,7 @@ checkProfile()
 checkThirdPartyInstallations()
 {
 	installFolder=$BUILD_PACK_DIR/resources/addons/thirdparty-installs
-	if [ -d ${pluginFolder} ] && [ "$(ls $pluginFolder)"  ]; then
+	if [ -d ${installFolder} ] && [ "$(ls $installFolder)"  ]; then
 		mkdir -p tibco.home/thirdparty-installs
 		for f in "$installFolder"/*; do
       		if [ -d $f ]
