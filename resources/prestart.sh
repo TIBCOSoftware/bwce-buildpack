@@ -42,6 +42,21 @@ checkJAVAHOME()
  		fi
 }
 
+checkJMXConfig()
+{
+	if [[ ${BW_JMX_CONFIG} ]]; then
+		if [[ $BW_JMX_CONFIG == *":"* ]]; then
+			JMX_HOST=${BW_JMX_CONFIG%%:*}
+			JMX_PORT=${BW_JMX_CONFIG#*:}
+		else
+			JMX_HOST="127.0.0.1"
+			JMX_PORT=$BW_JMX_CONFIG
+		fi
+		JMX_PARAM="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port="$JMX_PORT" -Dcom.sun.management.jmxremote.rmi.port="$JMX_PORT" -Djava.rmi.server.hostname="$JMX_HOST" -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false "
+		export BW_JAVA_OPTS=$BW_JAVA_OPTS" "$JMX_PARAM
+	fi
+}
+
 checkThirdPartyInstallation() 
 {
 	INSTALL_DIR=$APPDIR/tibco.home/thirdparty-installs
@@ -100,6 +115,7 @@ fi
 export JETTISON_JAR=`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison*/jettison*.jar`
 
 checkJAVAHOME
+checkJMXConfig
 checkThirdPartyInstallation
 
 $JAVA_HOME/bin/javac -cp $JETTISON_JAR:.:$JAVA_HOME/lib ProfileTokenResolver.java
