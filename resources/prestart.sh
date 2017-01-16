@@ -57,6 +57,15 @@ checkJMXConfig()
 	fi
 }
 
+checkJavaGCConfig()
+{
+	if [[ ${BW_JAVA_GC_OPTS}  ]]; then
+ 		echo $BW_JAVA_GC_OPTS
+ 	else
+ 		export BW_JAVA_GC_OPTS="-XX:+UseG1GC"
+ 	fi
+}
+
 checkThirdPartyInstallation() 
 {
 	INSTALL_DIR=$APPDIR/tibco.home/thirdparty-installs
@@ -116,6 +125,7 @@ export JETTISON_JAR=`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tp
 
 checkJAVAHOME
 checkJMXConfig
+checkJavaGCConfig
 checkThirdPartyInstallation
 
 $JAVA_HOME/bin/javac -cp $JETTISON_JAR:.:$JAVA_HOME/lib ProfileTokenResolver.java
