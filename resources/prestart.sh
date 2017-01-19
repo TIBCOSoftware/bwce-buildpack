@@ -2,9 +2,9 @@
 # Copyright (c) 2016, TIBCO Software Inc. All rights reserved.
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
-printBWTable ()
+printBWTable()
 {
-	echo "---------------> Product Inventory"
+	echo "------------------- Product Inventory -------------------"
 	echo "---------------------------------------------------------"
 	echo "Name      = "`grep product.name $APPDIR/tibco.home/bw*/*/system/lib/bw.ini|cut -d'=' -f 2`
 	echo "Version   = "`grep product.version $APPDIR/tibco.home/bw*/*/system/lib/bw.ini|cut -d'=' -f 2`
@@ -12,26 +12,27 @@ printBWTable ()
 	echo "Vendor    = "`grep product.vendor $APPDIR/tibco.home/bw*/*/system/lib/bw.ini|cut -d'=' -f 2`
 	echo "BuildDate = "`grep product.build.date $APPDIR/tibco.home/bw*/*/system/lib/bw.ini|cut -d'=' -f 2`
 	echo "---------------------------------------------------------"
-mkdir -p $APPDIR/tibco.home/addons
-pluginFolder=$APPDIR/tibco.home/addons
-if [ "$(ls $pluginFolder | grep lib)"  ]; then
-for name in $(find $pluginFolder/lib -type f); 
-do	
-	# filter out hidden files
-	if [[  "$(basename $name )" != .* ]];then
-		echo "Name      = "`grep product.name $name|cut -d'=' -f 2`
-		echo "Version   = "`grep product.version $name|cut -d'=' -f 2`
-		echo "Build     = "`grep product.build $name|cut -d'=' -f 2`
-		echo "Vendor    = "`grep product.vendor $name|cut -d'=' -f 2`
-		echo "BuildDate = "`grep product.build.date $name|cut -d'=' -f 2`
-		echo "---------------------------------------------------------"
+	mkdir -p $APPDIR/tibco.home/addons
+	pluginFolder=$APPDIR/tibco.home/addons
+	if [ "$(ls $pluginFolder | grep lib)" ]; then
+		for name in $(find $pluginFolder/lib -type f); 
+		do	
+			# filter out hidden files
+			if [[ "$(basename $name)" != .* && "$(basename $name)" == *.ini ]]; then
+				echo "Name      = "`grep product.name $name|cut -d'=' -f 2`
+				echo "Version   = "`grep product.version $name|cut -d'=' -f 2`
+				echo "Build     = "`grep product.build $name|cut -d'=' -f 2`
+				echo "Vendor    = "`grep product.vendor $name|cut -d'=' -f 2`
+				echo "BuildDate = "`grep product.build.date $name|cut -d'=' -f 2`
+				echo "---------------------------------------------------------"
+			fi
+		done
 	fi
-done
-fi
 }
+
 checkJAVAHOME()
 {
-		if [[ ${JAVA_HOME}  ]]; then
+		if [[ ${JAVA_HOME} ]]; then
  			echo $JAVA_HOME
  		else
 			JRE_VERSION=`ls $APPDIR/tibco.home/tibcojre64/`
