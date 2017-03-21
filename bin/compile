@@ -72,6 +72,16 @@ checkProfile()
                 			fi
             			done
           		fi
+				for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+				do
+					unzip -o -q $name
+					MANIFESTMF=META-INF/MANIFEST.MF
+					bwcePolicyStr=`grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid' ${MANIFESTMF}`
+					policy_res=$?
+					if [ ${policy_res} -eq 0 ]; then
+						POLICY_ENABLED="true"
+					fi
+				done
        		fi
     		else
            		print_Debug "Validation disabled."
@@ -220,6 +230,16 @@ checkEnvSubstituteConfig()
 	fi
 }
 
+checkPolicy()
+{
+	if [[ $POLICY_ENABLED = "true" ]]; then
+		if [ -e ${appnodeConfigFile} ]; then
+			printf '%s\n' "bw.governance.enabled=true" >> $appnodeConfigFile
+			echo "Set bw.governance.enabled=true"
+		fi
+	fi
+}
+
 checkCerts()
 {
 	certsFolder=$BUILD_PACK_DIR/resources/addons/certs
@@ -288,6 +308,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 BUILD_PACK_DIR=$(dirname $(dirname $0))
 export APPDIR=$BUILD_DIR
+POLICY_ENABLED="false"
 checkProfile
 print_Debug "args: $1 $2"
 print_Debug "appdir is $APPDIR"
@@ -355,6 +376,7 @@ checkJarsPalettes
 checkLibs
 checkAgents
 checkCerts
+checkPolicy
 addPCFCert
 checkThirdPartyInstallations
 # eof
