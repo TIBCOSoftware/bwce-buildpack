@@ -7,20 +7,20 @@ To find more about TIBCO BusinessWorks™ Container Edition, visit [Documentatio
 
 These buildpack scripts are subject to the license shared as part of the repository. Review the license before using or downloading these buildpack scripts.
 
-##Prerequisite
+## Prerequisite
   * Access to https://edelivery.tibco.com.
   * Install [Cloud Foundry CLI](https://docs.pivotal.io/pivotalcf/devguide/installcf/install-go-cli.html).
   * Install ZIP utility on your local machine.
   * [Login to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login).
     
-##Download TIBCO BusinessWorks™ Container Edition
+## Download TIBCO BusinessWorks™ Container Edition
 Download appropriate TIBCO BusinessWorks™ Container Edition 2.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime(bwce_cf.zip).
      
-##Create buildpack
+## Create buildpack
    1. Clone this repository onto your local machine.
    2. Locate bwce.zip file from the downloaded artifacts and run [/build/createBuildpack.sh](/build/createBuildpack.sh). This will create TIBCO BusinessWorks™ Container Edition buildpack(bwce-buildpack.zip) inside [build](/build) directory.
 
-##Buildpack Extension
+## Buildpack Extension
 You can customize the buildpack to add supported third-party drivers e.g. Oracle JDBC driver, OSGified bundles or runtime of certified   Plug-ins in TIBCO BusinessWorks™ Container Edition runtime. It can also be customized for application certificate management as well as to integrate with application configuration management services.
 * **Provision suppported JDBC drivers**:
      * Run **bwinstall[.exe] help** from `<BWCE_HOME>/bin` and follow instructions to add the driver to BWCE installation.
@@ -39,16 +39,16 @@ You can customize the buildpack to add supported third-party drivers e.g. Oracle
 
 Run [/build/createBuildpack.sh](/build/createBuildpack.sh) to create the customized buildpack.
 
-##Push buildpack to CloudFoundry environment
+## Push buildpack to CloudFoundry environment
   * Login to your Cloud Foundry environment
   * Create buildpack if not already created
   * Run [/build/pushBuildpack.sh](/build/pushBuildpack.sh)
      
-##Test buildpack
+## Test buildpack
   * Login to your Cloud Foundry environment
   * Push buildpack to Cloud Foundry if not already done
   * Go to [test](/test) directory and run [testBuildpack.sh](/test/testBuildpack.sh). If valid buildpack is created and uploaded,  `Buildpack test Passed !!` message will be printed. In case of failure, inspect logs for `tibco.bwce.sample.http` application.
 
-##License
+## License
 These buildpack scripts are released under [3-clause BSD](License.md) license.
      
