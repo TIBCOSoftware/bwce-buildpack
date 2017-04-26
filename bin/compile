@@ -80,6 +80,7 @@ checkProfile()
 					policy_res=$?
 					if [ ${policy_res} -eq 0 ]; then
 						POLICY_ENABLED="true"
+						break
 					fi
 				done
        		fi
