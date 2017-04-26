@@ -83,6 +83,17 @@ checkProfile()
 						break
 					fi
 				done
+				for name in $(find $BUILD_DIR -type f -iname "*.jar");
+                do
+                    unzip -o -q $name
+                    MANIFESTMF=META-INF/MANIFEST.MF
+                    bwceHttpSRStr=`grep -E 'bw.httpconnector' ${MANIFESTMF}`
+                    port_res=$?
+                    if [ ${port_res} -ne 0 ]; then
+                        OVERRIDE_MANAGEMENT_PORT="true"
+                        break
+                    fi
+                done
        		fi
     		else
            		print_Debug "Validation disabled."
@@ -323,6 +334,16 @@ addPCFCert()
 	fi	
 }
 
+overridePort()
+{
+    if [[ $OVERRIDE_MANAGEMENT_PORT = "true" ]]; then
+        if [ -e ${appnodeConfigFile} ]; then
+            printf '%s\n' "org.osgi.service.http.port=$PORT" >> $appnodeConfigFile
+            print_Debug "org.osgi.service.http.port=$PORT"
+        fi
+    fi
+}
+
 echo "Running BWCE buildpack"
 
 BUILD_DIR=$1
@@ -330,6 +351,7 @@ CACHE_DIR=$2
 BUILD_PACK_DIR=$(dirname $(dirname $0))
 export APPDIR=$BUILD_DIR
 POLICY_ENABLED="false"
+OVERRIDE_MANAGEMENT_PORT="false"
 checkProfile
 print_Debug "args: $1 $2"
 print_Debug "appdir is $APPDIR"
@@ -397,6 +419,7 @@ checkJarsPalettes
 checkLibs
 checkAgents
 checkCerts
+overridePort
 checkPolicy
 addPCFCert
 checkThirdPartyInstallations
