@@ -338,19 +338,11 @@ addPCFCert()
 
 overridePort()
 {
+	echo "Checking to Override Management Port. Variable for override value is $OVERRIDE_MANAGEMENT_PORT"
 	if [[ $OVERRIDE_MANAGEMENT_PORT = "true" ]]; then
-		if [[ ${BW_APP_MONITORING_CONFIG} ]]; then
-			if [ -e ${appnodeConfigFile} ]; then
+		if [ -e ${appnodeConfigFile} ]; then
 				sed -i 's/org.osgi.service.http.port=8090/org.osgi.service.http.port=8080/g' $appnodeConfigFile
 				print_Debug "set org.osgi.service.http.port to 8080"
-			fi
-		else
-			if [[ ${VCAP_SERVICES} && "${VCAP_SERVICES,,}" == *"\"name\":\""*"bwce-monitoring"* ]]; then
-				if [ -e ${appnodeConfigFile} ]; then
-					sed -i 's/org.osgi.service.http.port=8090/org.osgi.service.http.port=8080/g' $appnodeConfigFile
-				print_Debug "set org.osgi.service.http.port to 8080"
-				fi
-			fi
 		fi
     fi
 }
