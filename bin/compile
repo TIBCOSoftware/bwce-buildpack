@@ -83,6 +83,19 @@ checkProfile()
 						break
 					fi
 				done
+				for name in $(find $BUILD_DIR -type f -iname "*.jar");
+                do
+                    unzip -o -q $name
+                    MANIFESTMF=META-INF/MANIFEST.MF
+                    bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
+                    port_res=$?
+                    if [ ${port_res} -eq 0 ]; then
+                        OVERRIDE_MANAGEMENT_PORT="false"
+						break
+                    else  
+						OVERRIDE_MANAGEMENT_PORT="true"
+                    fi
+                done
        		fi
     		else
            		print_Debug "Validation disabled."
@@ -213,31 +226,31 @@ checkEnvSubstituteConfig()
 	if [[ ${BW_ENGINE_THREADCOUNT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			printf '%s\n' "bw.engine.threadCount=$BW_ENGINE_THREADCOUNT" >> $appnodeConfigFile
-			echo "Set BW_ENGINE_THREADCOUNT to $BW_ENGINE_THREADCOUNT"
+			print_Debug "Set BW_ENGINE_THREADCOUNT to $BW_ENGINE_THREADCOUNT"
 		fi
 	fi
 	if [[ ${BW_ENGINE_STEPCOUNT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			printf '%s\n' "bw.engine.stepCount=$BW_ENGINE_STEPCOUNT" >> $appnodeConfigFile
-			echo "Set BW_ENGINE_STEPCOUNT to $BW_ENGINE_STEPCOUNT"
+			print_Debug "Set BW_ENGINE_STEPCOUNT to $BW_ENGINE_STEPCOUNT"
 		fi
 	fi
 	if [[ ${BW_APPLICATION_JOB_FLOWLIMIT} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			printf '%s\n' "bw.application.job.flowlimit.$bwBundleAppName=$BW_APPLICATION_JOB_FLOWLIMIT" >> $appnodeConfigFile
-			echo "Set BW_APPLICATION_JOB_FLOWLIMIT to $BW_APPLICATION_JOB_FLOWLIMIT"
+			print_Debug "Set BW_APPLICATION_JOB_FLOWLIMIT to $BW_APPLICATION_JOB_FLOWLIMIT"
 		fi
 	fi
 	if [[ ${BW_APP_MONITORING_CONFIG} ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			sed -i 's/bw.frwk.event.subscriber.metrics.enabled=false/bw.frwk.event.subscriber.metrics.enabled=true/g' $appnodeConfigFile
-			echo "set bw.frwk.event.subscriber.metrics.enabled to true"
+			print_Debug "set bw.frwk.event.subscriber.metrics.enabled to true"
 		fi
 	else
 		if [[ ${VCAP_SERVICES} && "${VCAP_SERVICES,,}" == *"\"name\":\""*"bwce-monitoring"* ]]; then
 			if [ -e ${appnodeConfigFile} ]; then
 				sed -i 's/bw.frwk.event.subscriber.metrics.enabled=false/bw.frwk.event.subscriber.metrics.enabled=true/g' $appnodeConfigFile
-				echo "set bw.frwk.event.subscriber.metrics.enabled to true"
+				print_Debug "set bw.frwk.event.subscriber.metrics.enabled to true"
 			fi
 		fi
 	fi
@@ -256,7 +269,7 @@ checkPolicy()
 	if [[ $POLICY_ENABLED = "true" ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			printf '%s\n' "bw.governance.enabled=true" >> $appnodeConfigFile
-			echo "Set bw.governance.enabled=true"
+			print_Debug "Set bw.governance.enabled=true"
 		fi
 	fi
 }
@@ -323,6 +336,17 @@ addPCFCert()
 	fi	
 }
 
+overridePort()
+{
+	echo "Checking to Override Management Port. Variable for override value is $OVERRIDE_MANAGEMENT_PORT"
+	if [[ $OVERRIDE_MANAGEMENT_PORT = "true" ]]; then
+		if [ -e ${appnodeConfigFile} ]; then
+				sed -i 's/org.osgi.service.http.port=8090/org.osgi.service.http.port=8080/g' $appnodeConfigFile
+				print_Debug "set org.osgi.service.http.port to 8080"
+		fi
+    fi
+}
+
 echo "Running BWCE buildpack"
 
 BUILD_DIR=$1
@@ -330,6 +354,7 @@ CACHE_DIR=$2
 BUILD_PACK_DIR=$(dirname $(dirname $0))
 export APPDIR=$BUILD_DIR
 POLICY_ENABLED="false"
+OVERRIDE_MANAGEMENT_PORT="false"
 checkProfile
 print_Debug "args: $1 $2"
 print_Debug "appdir is $APPDIR"
@@ -383,7 +408,6 @@ if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 	fi
 	else
 		sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
-		#echo "The loglevel set to ERROR level"
 fi
 
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
@@ -397,6 +421,7 @@ checkJarsPalettes
 checkLibs
 checkAgents
 checkCerts
+overridePort
 checkPolicy
 addPCFCert
 checkThirdPartyInstallations
