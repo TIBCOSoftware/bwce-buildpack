@@ -289,23 +289,10 @@ checkCerts()
 				certsFile=$(basename $name )
  			 	print_Debug "Importing $certsFile into java truststore"
 
-				
   				aliasName="${certsFile%.*}"				
 				$jreLocation/bin/keytool -import -trustcacerts -keystore $certsStore -storepass changeit -noprompt -alias $aliasName -file $name
 			fi
 		done
-	fi
-
-}
-
-memoryCalculator()
-{
-	if [[ ${MEMORY_LIMIT} ]]; then
-		memory_Number=`echo $MEMORY_LIMIT | sed 's/m$//'`
-		configured_MEM=$((($memory_Number*67+50)/100))
-		thread_Stack=$((memory_Number))
-		JAVA_PARAM="-Xmx"$configured_MEM"M -Xms"$configured_MEM"M -Xss512K"
-		export BW_JAVA_OPTS=$JAVA_PARAM" "$BW_JAVA_OPTS
 	fi
 }
 
@@ -341,10 +328,10 @@ overridePort()
 	echo "Checking to Override Management Port. Variable for override value is $OVERRIDE_MANAGEMENT_PORT"
 	if [[ $OVERRIDE_MANAGEMENT_PORT = "true" ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
-				sed -i 's/org.osgi.service.http.port=8090/org.osgi.service.http.port=8080/g' $appnodeConfigFile
-				print_Debug "set org.osgi.service.http.port to 8080"
+			sed -i 's/org.osgi.service.http.port=8090/org.osgi.service.http.port=8080/g' $appnodeConfigFile
+			print_Debug "set org.osgi.service.http.port to 8080"
 		fi
-    fi
+	fi
 }
 
 echo "Running BWCE buildpack"
@@ -415,7 +402,6 @@ cp $BUILD_PACK_DIR/java-profile-token-resolver/ProfileTokenResolver.java $BUILD_
 mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/. $BUILD_DIR/keystore
 
 chmod 755 $BUILD_DIR/prestart.sh
-memoryCalculator
 checkEnvSubstituteConfig
 checkJarsPalettes
 checkLibs
