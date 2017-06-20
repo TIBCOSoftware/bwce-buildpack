@@ -32,15 +32,26 @@ printBWTable()
 
 checkJAVAHOME()
 {
-		if [[ ${JAVA_HOME} ]]; then
- 			echo $JAVA_HOME
- 		else
-			JRE_VERSION=`ls $APPDIR/tibco.home/tibcojre64/`
-			jreLink=tibcojre64/$JRE_VERSION
-			chmod +x $APPDIR/tibco.home/$jreLink/bin/java
-			chmod +x $APPDIR/tibco.home/$jreLink/bin/javac
-			export JAVA_HOME=$APPDIR/tibco.home/$jreLink
- 		fi
+	if [[ ${JAVA_HOME} ]]; then
+ 		echo $JAVA_HOME
+ 	else
+		JRE_VERSION=`ls $APPDIR/tibco.home/tibcojre64/`
+		jreLink=tibcojre64/$JRE_VERSION
+		chmod +x $APPDIR/tibco.home/$jreLink/bin/java
+		chmod +x $APPDIR/tibco.home/$jreLink/bin/javac
+		export JAVA_HOME=$APPDIR/tibco.home/$jreLink
+ 	fi
+}
+
+memoryCalculator()
+{
+	if [[ ${MEMORY_LIMIT} ]]; then
+		memory_Number=`echo $MEMORY_LIMIT | sed 's/m$//'`
+		configured_MEM=$((($memory_Number*67+50)/100))
+		thread_Stack=$((memory_Number))
+		JAVA_PARAM="-Xmx"$configured_MEM"M -Xms"$configured_MEM"M -Xss512K"
+		export BW_JAVA_OPTS=$JAVA_PARAM" "$BW_JAVA_OPTS
+	fi
 }
 
 checkJMXConfig()
@@ -125,6 +136,7 @@ fi
 export JETTISON_JAR=`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison*/jettison*.jar`
 
 checkJAVAHOME
+memoryCalculator
 checkJMXConfig
 checkJavaGCConfig
 checkThirdPartyInstallation
