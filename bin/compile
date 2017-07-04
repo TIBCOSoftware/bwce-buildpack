@@ -34,7 +34,6 @@ print_Debug()
 
 checkProfile()
 {
-
 	defaultProfile=default.substvar
 	manifest=$BUILD_DIR/META-INF/MANIFEST.MF
 	bwAppConfig="TIBCO-BW-ConfigProfile"
@@ -44,34 +43,35 @@ checkProfile()
 	if [ -f ${manifest} ]; then
 		bwAppProfileStr=`grep -o $bwAppConfig.*.substvar ${manifest}`
 		bwBundleAppName=`while read line; do printf "%q\n" "$line"; done<${manifest} | awk '/.*:/{printf "%s%s", (NR==1)?"":RS,$0;next}{printf "%s", FS $0}END{print ""}' | grep -o $bwAppNameHeader.* | cut -d ":" -f2 | tr -d '[[:space:]]' | sed "s/\\\\\r'//g" | sed "s/$'//g"`		
-    	if [ "$DISABLE_BWCE_EAR_VALIDATION" != true ]; then
-        	bwEditionHeaderStr=`grep -E $bwEdition ${manifest}`
-       		res=$?
-       		if [ ${res} -eq 0 ]; then
-          		echo " "
-       		else
-          		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO BusinessWorks Container Edition Studio. Refer Conversion Guide for more details."
-          		exit 1
-       		fi
-       		bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
-       		res=$?
-       		if [ ${res} -eq 0 ]; then
-          		bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
-          		res2=$?
-          		if [ ${res2} -eq 0 ]; then
-            			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
-            			do  
-                			unzip -o -q $name
-                			MANIFESTMF=META-INF/MANIFEST.MF
-                			fileFiler="bw.file"
-                			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
-                			res=$?
-                			if [ ${res} -eq 0 ]; then
-                 				echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
-                 				exit 1
-                			fi
-            			done
-          		fi
+    		if [ "$DISABLE_BWCE_EAR_VALIDATION" != true ]; then
+        		bwEditionHeaderStr=`grep -E $bwEdition ${manifest}`
+       			res=$?
+	       		if [ ${res} -eq 0 ]; then
+		  		print_Debug " "
+	       		else
+		  		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO Business Studio Container Edition. Refer Conversion Guide for more details."
+		  		exit 1
+	       		fi
+	       		bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
+	       		res=$?
+	       		if [ ${res} -eq 0 ]; then
+		  		bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
+		  		res2=$?
+		  		if [ ${res2} -eq 0 ]; then
+		    			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+		    			do
+		        			unzip -o -q $name
+		        			MANIFESTMF=META-INF/MANIFEST.MF
+		        			fileFiler="bw.file"
+		        			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
+		        			res=$?
+		        			if [ ${res} -eq 0 ]; then
+		         				echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
+		         				exit 1
+		        			fi
+		    			done
+		  		fi
+
 				for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
 				do
 					unzip -o -q $name
@@ -83,27 +83,28 @@ checkProfile()
 						break
 					fi
 				done
+
 				for name in $(find $BUILD_DIR -type f -iname "*.jar");
-                do
-                    unzip -o -q $name
-                    MANIFESTMF=META-INF/MANIFEST.MF
-                    bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
-                    port_res=$?
-                    if [ ${port_res} -eq 0 ]; then
-                        OVERRIDE_MANAGEMENT_PORT="false"
-						break
-                    else  
+				do
+					unzip -o -q $name
+					MANIFESTMF=META-INF/MANIFEST.MF
+					bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
+					port_res=$?
+					if [ ${port_res} -eq 0 ]; then
+						OVERRIDE_MANAGEMENT_PORT="false"
+					else
 						OVERRIDE_MANAGEMENT_PORT="true"
-                    fi
-                done
-       		fi
+						break
+					fi
+				done
+	       		fi
     		else
-           		print_Debug "Validation disabled."
+           		print_Debug "BWCE EAR Validation disabled."
 
     		fi
 	fi
-	arr=$(echo $bwAppProfileStr | tr "/" "\n")
 
+	arr=$(echo $bwAppProfileStr | tr "/" "\n")
 	for x in $arr
 	do
     		case "$x" in 
@@ -111,9 +112,8 @@ checkProfile()
 		defaultProfile=$x;;esac	
 	done
 
-	print_Debug $defaultProfile
-
-	if [ -z ${BW_PROFILE:=${defaultProfile}} ]; then echo "BW_PROFILE is unset. Set it to $defaultProfile"; 
+	if [ -z ${BW_PROFILE:=${defaultProfile}} ]; then 
+		echo "BW_PROFILE is unset. Set it to $defaultProfile"; 
 	else 
 		case $BW_PROFILE in
  		*.substvar ) ;;
@@ -325,7 +325,7 @@ addPCFCert()
 
 overridePort()
 {
-	echo "Checking to Override Management Port. Variable for override value is $OVERRIDE_MANAGEMENT_PORT"
+	print_Debug "Checking to override management port. Variable for override value is: $OVERRIDE_MANAGEMENT_PORT"
 	if [[ $OVERRIDE_MANAGEMENT_PORT = "true" ]]; then
 		if [ -e ${appnodeConfigFile} ]; then
 			sed -i 's/org.osgi.service.http.port=8090/org.osgi.service.http.port=8080/g' $appnodeConfigFile
@@ -373,10 +373,8 @@ if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 else
 	zip -r -q /tmp/bwapp.ear *
 fi
+
 # move app into place
-
-
-
 rm -fr *
 mkdir $APPDIR/tmp
 mv /tmp/$BW_PROFILE $APPDIR/tmp/pcf.substvar
