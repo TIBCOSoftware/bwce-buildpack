@@ -39,7 +39,7 @@ checkProfile()
 	bwAppConfig="TIBCO-BW-ConfigProfile"
 	bwAppNameHeader="Bundle-SymbolicName"
 	bwEdition='bwcf'
-	bwceTarget='TIBCO-BWCE-Edition-Target:'
+	#bwceTarget='TIBCO-BWCE-Edition-Target:'
 	if [ -f ${manifest} ]; then
 		bwAppProfileStr=`grep -o $bwAppConfig.*.substvar ${manifest}`
 		bwBundleAppName=`while read line; do printf "%q\n" "$line"; done<${manifest} | awk '/.*:/{printf "%s%s", (NR==1)?"":RS,$0;next}{printf "%s", FS $0}END{print ""}' | grep -o $bwAppNameHeader.* | cut -d ":" -f2 | tr -d '[[:space:]]' | sed "s/\\\\\r'//g" | sed "s/$'//g"`		
@@ -52,52 +52,52 @@ checkProfile()
 		  		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO Business Studio Container Edition. Refer Conversion Guide for more details."
 		  		exit 1
 	       		fi
-	       		bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
-	       		res=$?
-	       		if [ ${res} -eq 0 ]; then
-		  		bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
-		  		res2=$?
-		  		if [ ${res2} -eq 0 ]; then
-		    			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
-		    			do
-		        			unzip -o -q $name
-		        			MANIFESTMF=META-INF/MANIFEST.MF
-		        			fileFiler="bw.file"
-		        			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
-		        			res=$?
-		        			if [ ${res} -eq 0 ]; then
-		         				echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
-		         				exit 1
-		        			fi
-		    			done
-		  		fi
+	       		#bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
+	       		#res=$?
+	       		#if [ ${res} -eq 0 ]; then
+		  		#bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
+		  		#res2=$?
+		  		#if [ ${res2} -eq 0 ]; then
+    			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+    			do
+        			unzip -o -q $name
+        			MANIFESTMF=META-INF/MANIFEST.MF
+        			fileFiler="bw.file"
+        			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
+        			res=$?
+        			if [ ${res} -eq 0 ]; then
+         				echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
+         				exit 1
+        			fi
+    			done
+		  		#fi
 
-				for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
-				do
-					unzip -o -q $name
-					MANIFESTMF=META-INF/MANIFEST.MF
-					bwcePolicyStr=`grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid' ${MANIFESTMF}`
-					policy_res=$?
-					if [ ${policy_res} -eq 0 ]; then
-						POLICY_ENABLED="true"
-						break
-					fi
-				done
+			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+			do
+				unzip -o -q $name
+				MANIFESTMF=META-INF/MANIFEST.MF
+				bwcePolicyStr=`grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid' ${MANIFESTMF}`
+				policy_res=$?
+				if [ ${policy_res} -eq 0 ]; then
+					POLICY_ENABLED="true"
+					break
+				fi
+			done
 
-				for name in $(find $BUILD_DIR -type f -iname "*.jar");
-				do
-					unzip -o -q $name
-					MANIFESTMF=META-INF/MANIFEST.MF
-					bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
-					port_res=$?
-					if [ ${port_res} -eq 0 ]; then
-						OVERRIDE_MANAGEMENT_PORT="false"
-					else
-						OVERRIDE_MANAGEMENT_PORT="true"
-						break
-					fi
-				done
-	       		fi
+			for name in $(find $BUILD_DIR -type f -iname "*.jar");
+			do
+				unzip -o -q $name
+				MANIFESTMF=META-INF/MANIFEST.MF
+				bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
+				port_res=$?
+				if [ ${port_res} -eq 0 ]; then
+					OVERRIDE_MANAGEMENT_PORT="false"
+				else
+					OVERRIDE_MANAGEMENT_PORT="true"
+					break
+				fi
+			done
+	       		#fi
     		else
            		print_Debug "BWCE EAR Validation disabled."
 
