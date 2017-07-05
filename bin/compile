@@ -52,12 +52,7 @@ checkProfile()
 		  		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO Business Studio Container Edition. Refer Conversion Guide for more details."
 		  		exit 1
 	       		fi
-	       		#bwceTargetHeaderStr=`grep -E $bwceTarget ${manifest}`
-	       		#res=$?
-	       		#if [ ${res} -eq 0 ]; then
-		  		#bwceTargetStr=`echo "$bwceTargetHeaderStr" | grep -E 'docker'`
-		  		#res2=$?
-		  		#if [ ${res2} -eq 0 ]; then
+
     			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
     			do
         			unzip -o -q $name
@@ -70,38 +65,35 @@ checkProfile()
          				exit 1
         			fi
     			done
-		  		#fi
-
-			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
-			do
-				unzip -o -q $name
-				MANIFESTMF=META-INF/MANIFEST.MF
-				bwcePolicyStr=`grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid' ${MANIFESTMF}`
-				policy_res=$?
-				if [ ${policy_res} -eq 0 ]; then
-					POLICY_ENABLED="true"
-					break
-				fi
-			done
-
-			for name in $(find $BUILD_DIR -type f -iname "*.jar");
-			do
-				unzip -o -q $name
-				MANIFESTMF=META-INF/MANIFEST.MF
-				bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
-				port_res=$?
-				if [ ${port_res} -eq 0 ]; then
-					OVERRIDE_MANAGEMENT_PORT="false"
-				else
-					OVERRIDE_MANAGEMENT_PORT="true"
-					break
-				fi
-			done
-	       		#fi
     		else
            		print_Debug "BWCE EAR Validation disabled."
-
     		fi
+
+		for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+		do
+			unzip -o -q $name
+			MANIFESTMF=META-INF/MANIFEST.MF
+			bwcePolicyStr=`grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid' ${MANIFESTMF}`
+			policy_res=$?
+			if [ ${policy_res} -eq 0 ]; then
+				POLICY_ENABLED="true"
+				break
+			fi
+		done
+
+		for name in $(find $BUILD_DIR -type f -iname "*.jar");
+		do
+			unzip -o -q $name
+			MANIFESTMF=META-INF/MANIFEST.MF
+			bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
+			port_res=$?
+			if [ ${port_res} -eq 0 ]; then
+				OVERRIDE_MANAGEMENT_PORT="false"
+			else
+				OVERRIDE_MANAGEMENT_PORT="true"
+				break
+			fi
+		done
 	fi
 
 	arr=$(echo $bwAppProfileStr | tr "/" "\n")
@@ -160,7 +152,7 @@ checkJarsPalettes()
 		for name in $(find $pluginFolder -type f); 
 		do	
 		# filter out hidden files
-			if [[  "$(basename $name )" != .* ]];then
+			if [[ "$(basename $name )" != .* ]];then
    				extract $name
 				mkdir -p tibco.home/addons/runtime/plugins/ && mv runtime/plugins/* "$_"
 				mkdir -p tibco.home/addons/lib/ && mv lib/* "$_"/${name##*/}.ini
@@ -168,8 +160,6 @@ checkJarsPalettes()
 		done
 	fi
 }
-
-
 
 checkLibs()
 {
