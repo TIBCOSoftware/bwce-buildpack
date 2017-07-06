@@ -49,26 +49,27 @@ checkProfile()
 	       		if [ ${res} -eq 0 ]; then
 		  		print_Debug " "
 	       		else
-		  		echo "Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO Business Studio Container Edition. Refer Conversion Guide for more details."
+		  		echo "ERROR: Application [$bwBundleAppName] is not supported in TIBCO BusinessWorks Container Edition. Convert this application to TIBCO BusinessWorks Container Edition using TIBCO Business Studio Container Edition. Refer Conversion Guide for more details."
 		  		exit 1
 	       		fi
-
-    			for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
-    			do
-        			unzip -o -q $name
-        			MANIFESTMF=META-INF/MANIFEST.MF
-        			fileFiler="bw.file"
-        			bwceTargetHeaderStr=`grep -E $fileFiler ${MANIFESTMF}`
-        			res=$?
-        			if [ ${res} -eq 0 ]; then
-         				echo "Application [$bwBundleAppName] is using unsupported File palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
-         				exit 1
-        			fi
-    			done
     		else
            		print_Debug "BWCE EAR Validation disabled."
     		fi
 
+		# Check for BWCE unsupported palettes in manifest
+		for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
+		do
+			unzip -o -q $name
+			MANIFESTMF=META-INF/MANIFEST.MF
+			bwcePaletteStr=`grep -E 'bw.file|bw.tcp|bw.rv' ${MANIFESTMF}`
+			res=$?
+			if [ ${res} -eq 0 ]; then
+ 				echo "ERROR: Application [$bwBundleAppName] is using unsupported File/RV/TCP palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
+ 				exit 1
+			fi
+		done
+
+		# Check for Policy in manifest
 		for name in $(find $BUILD_DIR -type f -iname "*.jar"); 
 		do
 			unzip -o -q $name
@@ -81,6 +82,7 @@ checkProfile()
 			fi
 		done
 
+		# Check whether to overwrite management port or not
 		for name in $(find $BUILD_DIR -type f -iname "*.jar");
 		do
 			unzip -o -q $name
