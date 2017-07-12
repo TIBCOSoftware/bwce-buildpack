@@ -61,7 +61,7 @@ checkProfile()
 		do
 			unzip -o -q $name
 			MANIFESTMF=META-INF/MANIFEST.MF
-			bwcePaletteStr=`grep -E 'bw.file|bw.tcp|bw.rv' ${MANIFESTMF}`
+			bwcePaletteStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.file|bw.tcp|bw.rv'`
 			res=$?
 			if [ ${res} -eq 0 ]; then
  				echo "ERROR: Application [$bwBundleAppName] is using unsupported File/RV/TCP palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
@@ -74,7 +74,7 @@ checkProfile()
 		do
 			unzip -o -q $name
 			MANIFESTMF=META-INF/MANIFEST.MF
-			bwcePolicyStr=`grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid' ${MANIFESTMF}`
+			bwcePolicyStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.authxml|bw.cred|bw.ldap|bw.wss|bw.dbauth|bw.kerberos|bw.realmdb|bw.ldaprealm|bw.userid'`
 			policy_res=$?
 			if [ ${policy_res} -eq 0 ]; then
 				POLICY_ENABLED="true"
@@ -87,7 +87,7 @@ checkProfile()
 		do
 			unzip -o -q $name
 			MANIFESTMF=META-INF/MANIFEST.MF
-			bwceHttpSRStr=`grep -E 'bw.ftlrealmserverconnection|bw.httpconnector' ${MANIFESTMF}`
+			bwceHttpSRStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.ftlrealmserverconnection|bw.httpconnector'`
 			port_res=$?
 			if [ ${port_res} -eq 0 ]; then
 				OVERRIDE_MANAGEMENT_PORT="false"
