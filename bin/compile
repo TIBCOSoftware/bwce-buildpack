@@ -91,9 +91,9 @@ checkProfile()
 			port_res=$?
 			if [ ${port_res} -eq 0 ]; then
 				OVERRIDE_MANAGEMENT_PORT="false"
+                                break
 			else
 				OVERRIDE_MANAGEMENT_PORT="true"
-				break
 			fi
 		done
 	fi
