@@ -14,7 +14,7 @@ These buildpack scripts are subject to the license shared as part of the reposit
   * [Login to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login).
     
 ## Download TIBCO BusinessWorks™ Container Edition
-Download appropriate TIBCO BusinessWorks™ Container Edition 2.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime(bwce_cf.zip).
+Download appropriate TIBCO BusinessWorks™ Container Edition 2.0.0 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime (bwce-runtime-<version>.zip, e.g. bwce-runtime-2.3.1.zip).
      
 ## Create buildpack
    1. Clone this repository onto your local machine.
