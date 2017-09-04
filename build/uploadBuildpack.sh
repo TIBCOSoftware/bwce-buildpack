@@ -20,8 +20,10 @@ fi
 OUTPUT=`cf buildpacks | awk '$1 == "${buildpackName}"'`
 echo $OUTPUT
 if [ -z "$OUTPUT" ]; then
+    echo 'Creating buildpack...'
     cf create-buildpack ${buildpackName} $1 1
 else
+    echo 'Updating buildpack...'
     cf update-buildpack ${buildpackName} -p $1
 fi
 
