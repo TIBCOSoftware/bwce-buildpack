@@ -24,7 +24,7 @@ if [ -z "$OUTPUT" ]; then
     cf create-buildpack ${buildpackName} $1 1
 else
     echo 'Updating buildpack...'
-    cf update-buildpack ${buildpackName} -p $1
+    cf update-buildpack ${buildpackName} -p $1 -i 1
 fi
 
 if [ "$3" == "-test" ]; then
