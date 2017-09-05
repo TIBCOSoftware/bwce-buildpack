@@ -17,7 +17,7 @@ else
 fi
 
 #OUTPUT=`cf buildpacks | grep "${buildpackName}"`
-OUTPUT=`cf buildpacks | awk '$1 == "${buildpackName}"'`
+OUTPUT=`cf buildpacks | awk '$1 == ""${buildpackName}""'`
 echo $OUTPUT
 if [ -z "$OUTPUT" ]; then
     echo 'Creating buildpack...'
