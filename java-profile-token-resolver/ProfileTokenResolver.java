@@ -439,7 +439,21 @@ public class ProfileTokenResolver {
                                     valueMap.put(sb.toString(), value);
                                 }
                             }
-                        } else {
+                        } else if ("volume_mounts".equals(serviceConfigkey)) {
+			    JSONArray mounts = serviceConfig.getJSONArray(serviceConfigkey);
+                            if (mounts != null && mounts.length() > 0) {
+	                        for (int k = 0; k < mounts.length(); k++) {
+	                            JSONObject mount = mounts.getJSONObject(j);
+	                            Iterator<String> mitr = mount.keys();
+	                            while (mitr.hasNext()) {
+	                        	StringBuffer sb = new StringBuffer();
+	                        	String key = mitr.next();
+	                        	sb.append(serviceConfig.getString("name")).append(".").append("volume_mounts.").append(key);
+	                                valueMap.put(sb.toString(), mount.getString(key));
+	                            }
+	                        }
+                            }
+			} else {
                             StringBuffer sb = new StringBuffer();
                             sb.append(serviceConfig.getString("name")).append(".").append(serviceConfigkey);
                             valueMap.put(sb.toString(), serviceConfig.getString(serviceConfigkey));
