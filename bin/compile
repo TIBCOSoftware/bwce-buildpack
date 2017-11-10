@@ -209,6 +209,13 @@ checkAgents()
 checkEnvSubstituteConfig()
 {
 	bwappnodeTRA=tibco.home/bw*/*/bin/bwappnode.tra
+	bwappnodeFile=tibco.home/bw*/*/bin/bwappnode
+	if [ -e ${bwappnodeTRA} ]; then
+		sed -i 's?-Djava.class.path=?-Djava.class.path=$ADDONS_HOME/lib:?' $bwappnodeTRA
+	fi
+	if [ -e ${bwappnodeFile} ]; then
+		sed -i 's?-Djava.class.path=?-Djava.class.path=$ADDONS_HOME/lib:?' $bwappnodeFile
+	fi
 	if [[ ${BW_JAVA_OPTS} ]]; then
 		if [ -e ${bwappnodeTRA} ]; then
 			 sed -i.bak "/java.extended.properties/s/$/ ${BW_JAVA_OPTS}/" $bwappnodeTRA
