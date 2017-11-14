@@ -1,7 +1,7 @@
 ---
 applications:
 - name: tibco.bwce.sample.http 
-  memory: 1024M
+  memory: 512M
   path: tibco.bwce.sample.http_1.0.0.ear
   timeout: 180
   random-route: true
