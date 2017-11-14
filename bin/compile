@@ -179,9 +179,9 @@ checkLibs()
 				cp -vf $name $SUNEC_LOCATION
 			else
 				# filter out hidden files
-				if [[  "$(basename $name )" != .* ]];then
-					mkdir -p tibco.home/addons/lib/ 
-   					unzip -qj $name -d tibco.home/addons/lib/ 
+				if [[  "$(basename $name )" != .* ]]; then
+					mkdir -p tibco.home/addons/lib/
+   					unzip -q $name -d tibco.home/addons/lib/ 
    				fi
 			fi
 		done
