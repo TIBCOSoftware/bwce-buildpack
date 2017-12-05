@@ -30,7 +30,7 @@ else
 	buildpackName=$2
 fi
 
-zip -r build/${buildpackName}.zip bin/ java-profile-token-resolver/ resources/
+zip -r build/${buildpackName}.zip bin/ resources/
 
 buildpackLocation=`get_abs_filename build/${buildpackName}.zip`
 

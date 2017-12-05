@@ -395,7 +395,6 @@ if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
 fi
 
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
-cp $BUILD_PACK_DIR/java-profile-token-resolver/ProfileTokenResolver.java $BUILD_DIR
 mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/. $BUILD_DIR/keystore
 
 chmod 755 $BUILD_DIR/prestart.sh
