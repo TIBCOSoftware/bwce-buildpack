@@ -61,10 +61,10 @@ checkProfile()
 		do
 			unzip -o -q $name
 			MANIFESTMF=META-INF/MANIFEST.MF
-			bwcePaletteStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.tcp|bw.rv'`
+			bwcePaletteStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.rv'`
 			res=$?
 			if [ ${res} -eq 0 ]; then
- 				echo "ERROR: Application [$bwBundleAppName] is using unsupported RV/TCP palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
+ 				echo "ERROR: Application [$bwBundleAppName] is using unsupported RV palette and can not be deployed in CloudFoundry. Rebuild your application for CloudFoundry using TIBCO Business Studio Container Edition."
  				exit 1
 			fi
 		done
