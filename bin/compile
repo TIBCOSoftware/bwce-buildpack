@@ -87,7 +87,7 @@ checkProfile()
 		do
 			unzip -o -q $name
 			MANIFESTMF=META-INF/MANIFEST.MF
-			bwceHttpSRStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.ftlrealmserverconnection|bw.httpconnector'`
+			bwceHttpSRStr=`tr -d '\n\r ' < ${MANIFESTMF} | grep -E 'bw.ftlrealmserverconnection|bw.httpconnector|bw.tcp'`
 			port_res=$?
 			if [ ${port_res} -eq 0 ]; then
 				OVERRIDE_MANAGEMENT_PORT="false"
