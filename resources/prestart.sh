@@ -38,6 +38,7 @@ checkJAVAHOME()
 		JRE_VERSION=`ls $APPDIR/tibco.home/tibcojre64/`
 		jreLink=tibcojre64/$JRE_VERSION
 		chmod +x $APPDIR/tibco.home/$jreLink/bin/java
+		chmod +x $APPDIR/tibco.home/$jreLink/bin/javac
 		export JAVA_HOME=$APPDIR/tibco.home/$jreLink
  	fi
 }
@@ -140,7 +141,8 @@ checkJMXConfig
 checkJavaGCConfig
 checkThirdPartyInstallation
 
-$JAVA_HOME/bin/java -cp `echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:$JETTISON_JAR:.:$JAVA_HOME/lib com.tibco.bwce.profile.resolver.Resolver
+$JAVA_HOME/bin/javac -cp $JETTISON_JAR:.:$JAVA_HOME/lib ProfileTokenResolver.java
+$JAVA_HOME/bin/java -cp $JETTISON_JAR:.:$JAVA_HOME/lib ProfileTokenResolver
 
 STATUS=$?
 if [ $STATUS == "1" ]; then
