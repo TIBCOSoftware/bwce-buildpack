@@ -7,6 +7,10 @@ To find more about TIBCO BusinessWorks™ Container Edition, visit [Documentatio
 
 These buildpack scripts are subject to the license shared as part of the repository. Review the license before using or downloading these buildpack scripts.
 
+## Version
+  * For TIBCO BusinessWorks Container Edition 2.3.2 and prior versions, use bwce-buildpack script from branch [2.3.2](https://github.com/TIBCOSoftware/bwce-buildpack/tree/2.3.2).
+  * For TIBCO BusinessWorks Container Edition 2.3.3 and later versions, use bwce-buildpack script from branch [master](https://github.com/TIBCOSoftware/bwce-buildpack/).
+
 ## Prerequisite
   * Access to https://edelivery.tibco.com.
   * Install [Cloud Foundry CLI](https://docs.pivotal.io/pivotalcf/devguide/installcf/install-go-cli.html).
