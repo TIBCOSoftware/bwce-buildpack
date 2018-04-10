@@ -3,7 +3,7 @@ The TIBCO BusinessWorks™ Container Edition buildpack is a highly extensible [C
 
 TIBCO BusinessWorks(TM) Container Edition allows customers to leverage the power and functionality of TIBCO ActiveMatrix BusinessWorks(TM) in order to build cloud-native applications with an API-first approach and to deploy it to container-based PaaS platforms such as Cloud Foundry(TM).
 
-To find more about TIBCO BusinessWorks™ Container Edition, visit [Documentation](https://docs.tibco.com/products/tibco-businessworks-container-edition-2-3-2)
+To find more about TIBCO BusinessWorks™ Container Edition, visit [Documentation](https://docs.tibco.com/products/tibco-businessworks-container-edition-2-3-3)
 
 These buildpack scripts are subject to the license shared as part of the repository. Review the license before using or downloading these buildpack scripts.
 
@@ -11,18 +11,20 @@ These buildpack scripts are subject to the license shared as part of the reposit
   * For TIBCO BusinessWorks Container Edition 2.3.2 and prior versions, use bwce-buildpack script from branch [2.3.2](https://github.com/TIBCOSoftware/bwce-buildpack/tree/2.3.2).
   * For TIBCO BusinessWorks Container Edition 2.3.3 and later versions, use bwce-buildpack script from branch [master](https://github.com/TIBCOSoftware/bwce-buildpack/).
 
-## Prerequisite
+## Prerequisites
+To use this build-pack you'll need to have:
+
   * Access to https://edelivery.tibco.com.
-  * Install [Cloud Foundry CLI](https://docs.pivotal.io/pivotalcf/devguide/installcf/install-go-cli.html).
-  * Install ZIP utility on your local machine.
-  * [Login to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login).
+  * The [Cloud Foundry CLI](https://docs.pivotal.io/pivotalcf/devguide/installcf/install-go-cli.html) installed on your machine.
+  * A ZIP utility on your local machine.
+  * [Access to your Pivotal Cloud Foundry environment](https://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login) as an administrative user.
     
 ## Download TIBCO BusinessWorks™ Container Edition
-Download appropriate TIBCO BusinessWorks™ Container Edition 2.3.2 artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains TIBCO BusinessWorks™ Container Edition runtime (`bwce-runtime-<version>.zip`, e.g. bwce-runtime-2.3.2.zip).
+Download appropriate TIBCO BusinessWorks™ Container Edition 2.3.x artifacts from [https://edelivery.tibco.com](https://edelivery.tibco.com/storefront/eval/tibco-businessworks-container-edition/prod11654.html). It contains the TIBCO BusinessWorks™ Container Edition runtime (`bwce-runtime-<version>.zip`, e.g. bwce-runtime-2.3.3.zip).
      
 ## Create buildpack
-   1. Clone this repository onto your local machine.
-   2. Locate bwce.zip file from the downloaded artifacts and run [/build/createBuildpack.sh](/build/createBuildpack.sh). This will create TIBCO BusinessWorks™ Container Edition buildpack(bwce-buildpack.zip) inside [build](/build) directory.
+   1. Clone this repository onto your local machine (`git clone https://github.com/TIBCOSoftware/bwce-buildpack`).
+   2. Locate the `bwce-runtime-2.3.3.zip` file from the downloaded artifacts and run [./createBuildpack.sh](./build/createBuildpack.sh) from the `build` directory. This will create the TIBCO BusinessWorks™ Container Edition buildpack (bwce-buildpack.zip) inside [build](/build) directory.
 
 ## Buildpack Extension
 You can customize the buildpack to add supported third-party drivers e.g. Oracle JDBC driver, OSGified bundles or runtime of certified   Plug-ins in TIBCO BusinessWorks™ Container Edition runtime. It can also be customized for application certificate management as well as to integrate with application configuration management services.
