@@ -6,6 +6,10 @@ pipeline {
         stage('Awesome stage') {
           steps {
             echo 'Hello World'
+            waitUntil() {
+              sleep 1
+            }
+
           }
         }
         stage('Cool Stage') {
@@ -13,6 +17,11 @@ pipeline {
             sleep 2
           }
         }
+      }
+    }
+    stage('') {
+      steps {
+        timestamps()
       }
     }
   }
