@@ -396,7 +396,7 @@ mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/. $
 
 chmod 755 $BUILD_DIR/prestart.sh
 checkEnvSubstituteConfig
-checkJarsPalettes
+checkPlugins
 checkLibs
 checkAgents
 checkCerts
