@@ -158,6 +158,7 @@ checkJarsPalettes()
    				extract $name
 				mkdir -p tibco.home/addons/runtime/plugins/ && mv runtime/plugins/* "$_"
 				mkdir -p tibco.home/addons/lib/ && mv lib/* "$_"/${name##*/}.ini
+				mkdir -p tibco.home/addons/bin/ && mv bin/* "$_"
 			fi
 		done
 	fi
