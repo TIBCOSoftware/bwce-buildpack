@@ -3,6 +3,8 @@
 # You may not use this file except in compliance with the license 
 # terms contained in the TIBCO License.md file provided with this file.
 
+BWCE_VERSION=2.3.3
+
 get_abs_filename() {
 # $1 : relative filename
 echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
@@ -10,8 +12,8 @@ echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 
 echo ">>>>>>>>>> Start time: $(date) <<<<<<<<<<<<"
 if [[ $# -lt 1 || $# -gt 3 ]]; then
-    echo "Usage: ./createBuildpack.sh <path/to/bwce-runtime-2.3.1.zip> <buildpack-Name> <options>"
-    printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Location of runtime zip (bwce-runtime-<version>.zip)"
+    echo "Usage: ./createBuildpack.sh <path/to/bwce-runtime-$BWCE_VERSION.zip> <buildpack-Name> <options>"
+    printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Location of runtime zip (bwce-runtime-$BWCE_VERSION.zip)"
     printf "\t %s \t\t %s \n\t\t\t\t %s \n" "Buildpack name"
     printf "\t %s \t\t\t %s \n" "-test" "Test created buildpack"
     exit 1
