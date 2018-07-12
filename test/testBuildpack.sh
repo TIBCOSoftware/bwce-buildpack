@@ -19,8 +19,10 @@ echo "***** Starting BWCE Sanity *****"
 
 echo "***** Pushing HTTP Greetings App to CF *****"
 appName=`grep -E "name:" manifest.yml | cut -d ':' -f 2 | sed 's/^ *//g' | sed 's/ *$//g'`
-URL=`cf push -f manifest.yml -b $1 | grep "urls:" | cut -d ' ' -f 2`
+echo "cf push -f manifest.yml -b $1"
+cf push -f manifest.yml -b $1
 sleep 5
+URL=`cf routes | grep "${appName}$" | awk '{print $2 "." $3}'`
 a=$(curl "http://$URL/greetings/")
 BWCE_MESSAGE=`grep -E "RESPONSE_MESSAGE:" manifest.yml | cut -d ':' -f 2 | sed 's/^ *//g' | sed 's/ *$//g' `
 if [ "${a}" = "Greetings from $BWCE_MESSAGE" ]; then
