@@ -387,24 +387,15 @@ mv /tmp/bwapp.ear tibco.home/bw*/*/bin/
 logback=tibco.home/bw*/*/config/logback.xml
 appnodeConfigFile=tibco.home/bw*/*/config/appnode_config.ini
 
+
 if [[ ${CUSTOM_LOGBACK} ]]; then
-	         logback_custom=$BUILD_PACK_DIR/resources/addons/custom-logback/logback.xml
-		 if [ -e ${logback_custom} ]; then
-			cp ${logback} `ls $logback`.original.bak && cp -f ${logback_custom}  ${logback}  
-			echo "Using Custom Logback file"
-		else
-			echo "Custom Logback file not found. Using the default logback file"
-		fi	
+	logback_custom=$BUILD_PACK_DIR/resources/addons/custom-logback/logback.xml
+ 	if [ -e ${logback_custom} ]; then
+        mkdir -p tibco.home/custom-logback/ && cp $BUILD_PACK_DIR/resources/addons/custom-logback/logback.xml "$_"
+  	fi	
 fi
 
-if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
-	if [ -e ${logback} ]; then
-		sed -i.bak "/<root/ s/\".*\"/\"$BW_LOGLEVEL\"/Ig" $logback
-		echo "The loglevel is set to $BW_LOGLEVEL level"
-	fi
-	else
-		sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
-fi
+
 
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
 mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/. $BUILD_DIR/keystore

@@ -68,6 +68,7 @@ checkJMXConfig()
 	fi
 }
 
+
 checkJavaGCConfig()
 {
 	if [[ ${BW_JAVA_GC_OPTS}  ]]; then
@@ -134,6 +135,30 @@ fi
 
 export JETTISON_JAR=`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison*/jettison*.jar`
 
+setLogLevel()
+{
+	logback=$APPDIR/tibco.home/bw*/*/config/logback.xml
+	if [[ ${CUSTOM_LOGBACK} ]]; then
+		     logback_custom=$APPDIR/tibco.home/custom-logback/logback.xml
+			 if [ -e ${logback_custom} ]; then
+				cp ${logback} `ls $logback`.original.bak && cp -f ${logback_custom}  ${logback}  
+				echo "Using Custom Logback file"
+			else
+				echo "Custom Logback file not found. Using the default logback file"
+			fi	
+	fi
+
+	if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
+		if [ -e ${logback} ]; then
+			sed -i.bak "/<root/ s/\".*\"/\"$BW_LOGLEVEL\"/Ig" $logback
+			echo "The loglevel is set to $BW_LOGLEVEL level"
+		fi
+		else
+			sed -i.bak "/<root/ s/\".*\"/\"ERROR\"/Ig" $logback
+fi
+}
+
+setLogLevel
 checkJAVAHOME
 memoryCalculator
 checkJMXConfig
