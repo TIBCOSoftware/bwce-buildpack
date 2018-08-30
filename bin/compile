@@ -291,7 +291,7 @@ checkCerts()
  			 	print_Debug "Importing $certsFile into java truststore"
 
   				aliasName="${certsFile%.*}"				
-				$jreLocation/bin/keytool -import -trustcacerts -keystore $certsStore -storepass changeit -noprompt -alias $aliasName -file $name
+				$jreLocation/bin/keytool -import -trustcacerts -keystore $certsStore -storepass changeit -noprompt -alias $aliasName -file $name 2>&1 >/dev/null
 			fi
 		done
 	fi
@@ -316,7 +316,7 @@ addPCFCert()
 				print_Debug "Importing $certsFile into java truststore"
 
 		  		aliasName="${certsFile%.*}"	
-				$jreLocation/bin/keytool -import -trustcacerts -keystore $certsStore -storepass changeit -noprompt -alias $aliasName -file $fname
+				$jreLocation/bin/keytool -import -trustcacerts -keystore $certsStore -storepass changeit -noprompt -alias $aliasName -file $fname 2>&1 >/dev/null
 			fi
 		fi
 	else
