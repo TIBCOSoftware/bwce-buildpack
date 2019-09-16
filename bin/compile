@@ -25,6 +25,19 @@ extract ()
 	fi
 }
 
+getPlugins()
+{
+	echo "Trying to get ZIP File"
+	if [[ ${PLUGINS_URL} ]]; then
+		chmod 777 $BUILD_PACK_DIR/resources/addons/plugins
+		cd $BUILD_PACK_DIR/resources/addons/plugins
+		plugins_url=$PLUGINS_URL
+		echo "Downloading from HTTP URL $plugins_url"
+		curl -LJO -v $plugins_url
+ 		echo "Download complete"
+	fi
+}
+
 print_Debug()
 {
 	if [[ ${BW_LOGLEVEL} && "${BW_LOGLEVEL,,}"="debug" ]]; then
@@ -143,9 +156,10 @@ checkJarsPalettes()
 	BW_VERSION=`ls $APPDIR/tibco.home/bw*/`
 	jarFolder=$BUILD_PACK_DIR/resources/addons/jars
 	if [ -d ${jarFolder} ] && [ "$(ls $jarFolder)"  ]; then 
-		print_Debug "Adding additional jars"
+		echo "Adding additional jars"
 		cp -r $BUILD_PACK_DIR/resources/addons/jars/* `echo tibco.home/bw*/*`/system/hotfix/shared
 	fi
+	getPlugins
 	pluginFolder=$BUILD_PACK_DIR/resources/addons/plugins
 	if [ -d ${pluginFolder} ] && [ "$(ls $pluginFolder)"  ]; then 
 		echo "Adding Plug-in Jars"
@@ -336,17 +350,7 @@ overridePort()
 }
 
 
-getPlugins()
-{
-	echo "Trying to get ZIP File"
-	if [[ ${PLUGINS_URL} ]]; then
-		$BUILD_PACK_DIR/resources/addons/plugins
-		plugins_url=$PLUGINS_URL
-		echo "Downloading from HTTP URL $plugins_url"
-		curl -L -O plugins_url
- 		echo "Download complete"
-	fi
-}
+
 
 echo "Running BWCE buildpack"
 
@@ -408,7 +412,7 @@ if [[ ${CUSTOM_LOGBACK} ]]; then
   	fi	
 fi
 
-getPlugins
+
 cp $BUILD_PACK_DIR/resources/prestart.sh $BUILD_DIR
 mkdir -p $BUILD_DIR/keystore && cp -r $BUILD_PACK_DIR/resources/addons/certs/. $BUILD_DIR/keystore
 
