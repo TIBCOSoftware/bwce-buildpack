@@ -35,11 +35,27 @@ getPlugins()
 		#Download in plugins directory
 		cd $BUILD_DIR/dynamicplugins
 		plugins_url=$PLUGINS_URL
-		echo "Downloading from HTTP URL $plugins_url"
-		curl -LJO $plugins_url
- 		echo "Download complete"
-		#ls -al
-		#mv TIB_bwlx_6.1.3_v8_bwce-runtime.zip\?raw=true TIB_bwlx_6.1.3_v8_bwce-runtime.zip
+		#plugins_url=$(echo $plugins_url | tr "," "\n")
+        IFS=',' read -ra plugins_array <<< "$plugins_url"
+		echo "----------Downloading Plugins----------"
+		
+		echo "===The following plugins will be downloaded==="
+        for x in "${plugins_array[@]}"
+        do
+        echo "> [$x]"
+        done
+
+		for plugin in "${plugins_array[@]}"
+		do
+			echo "########## Start downloading from $plugin ##########"
+    		if [[ ${PLUGINS_URL_CREDENTIALS} ]]; then
+				curl -LJO -u $PLUGINS_URL_CREDENTIALS $plugin
+			else
+				curl -LJO $plugin
+			fi
+ 		echo "########## Download complete for $plugin ##########"
+		done
+		echo "----------Completed All Plugins Download----------"
 		#Move back to working directory
 		cd -
 	fi
