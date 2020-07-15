@@ -49,7 +49,9 @@ memoryCalculator()
 		configured_MEM=$((($memory_Number*67+50)/100))
 		thread_Stack=$((memory_Number))
 		JAVA_PARAM="-Xmx"$configured_MEM"M -Xms128M -Xss512K"
-		export BW_JAVA_OPTS=$JAVA_PARAM" "$BW_JAVA_OPTS
+		if [[ ${BW_JAVA_OPTS} && ${BW_JAVA_OPTS} != *"Xm"* ||  -z ${BW_JAVA_OPTS} ]]; then
+			export BW_JAVA_OPTS=$JAVA_PARAM" "$BW_JAVA_OPTS
+		fi
 	fi
 }
 
