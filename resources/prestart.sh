@@ -160,14 +160,31 @@ setLogLevel()
 fi
 }
 
+
+checkBWProfileEncryptionConfig()
+{
+	if [[ ${BW_PROFILE_ENCRYPTION_KEYSTORE} ]]; then
+			certsFolder=/resources/addons/certs
+			KEYSTORETYPE=${BW_PROFILE_ENCRYPTION_KEYSTORETYPE}
+			KEYSTORE=${BW_PROFILE_ENCRYPTION_KEYSTORE}
+			KEYSTOREPASSWORD=${BW_PROFILE_ENCRYPTION_KEYSTOREPASSWORD}
+			KEYALIAS=${BW_PROFILE_ENCRYPTION_KEYALIAS}
+			KEYALIASPASSOWRD=${BW_PROFILE_ENCRYPTION_KEYALIASPASSWORD}
+			BW_ENCRYPTED_PROFILE_CONFIG=" -Dbw.encryptedprofile.keystoreType="$KEYSTORETYPE" -Dbw.encryptedprofile.keystore="$certsFolder"/"$KEYSTORE" -Dbw.encryptedprofile.keystorePassword="$KEYSTOREPASSWORD" -Dbw.encryptedprofile.keyAlias="$KEYALIAS" -Dbw.encryptedprofile.keyAliasPassword="$KEYALIASPASSOWRD
+			export BW_JAVA_OPTS=$BW_JAVA_OPTS" "$BW_ENCRYPTED_PROFILE_CONFIG
+	fi
+} 
+
+
 setLogLevel
 checkJAVAHOME
 memoryCalculator
 checkJMXConfig
 checkJavaGCConfig
 checkThirdPartyInstallation
+checkBWProfileEncryptionConfig
 
-$JAVA_HOME/bin/java -cp `echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:$JETTISON_JAR:.:$JAVA_HOME/lib com.tibco.bwce.profile.resolver.Resolver
+$JAVA_HOME/bin/java -cp `echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.security.tibcrypt_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.encryption.util_*`/lib/*:$JETTISON_JAR:.:$JAVA_HOME/lib com.tibco.bwce.profile.resolver.Resolver
 
 STATUS=$?
 if [ $STATUS == "1" ]; then
