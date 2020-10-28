@@ -164,7 +164,7 @@ fi
 checkBWProfileEncryptionConfig()
 {
 	if [[ ${BW_PROFILE_ENCRYPTION_KEYSTORE} ]]; then
-			certsFolder=/resources/addons/certs
+			certsFolder=$APPDIR/keystore
 			KEYSTORETYPE=${BW_PROFILE_ENCRYPTION_KEYSTORETYPE}
 			KEYSTORE=${BW_PROFILE_ENCRYPTION_KEYSTORE}
 			KEYSTOREPASSWORD=${BW_PROFILE_ENCRYPTION_KEYSTOREPASSWORD}
@@ -184,7 +184,7 @@ checkJavaGCConfig
 checkThirdPartyInstallation
 checkBWProfileEncryptionConfig
 
-$JAVA_HOME/bin/java -cp `echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.security.tibcrypt_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.encryption.util_*`/lib/*:$JETTISON_JAR:.:$JAVA_HOME/lib com.tibco.bwce.profile.resolver.Resolver
+$JAVA_HOME/bin/java $BW_ENCRYPTED_PROFILE_CONFIG -cp `echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.security.tibcrypt_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.encryption.util_*`/lib/*:$JETTISON_JAR:.:$JAVA_HOME/lib com.tibco.bwce.profile.resolver.Resolver
 
 STATUS=$?
 if [ $STATUS == "1" ]; then
