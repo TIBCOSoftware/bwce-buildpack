@@ -366,12 +366,14 @@ echo "Running BWCE buildpack"
 
 BUILD_DIR=$1
 CACHE_DIR=$2
+DEPS_PATH=$3
+INDEX=$4
 BUILD_PACK_DIR=$(dirname $(dirname $0))
 export APPDIR=$BUILD_DIR
 POLICY_ENABLED="false"
 OVERRIDE_MANAGEMENT_PORT="false"
 checkProfile
-print_Debug "args: $1 $2"
+print_Debug "args: $1 $2 $3 $4"
 print_Debug "appdir is $APPDIR"
 print_Debug "build pack dir is $BUILD_PACK_DIR"
 print_Debug "build dir is $BUILD_DIR"
