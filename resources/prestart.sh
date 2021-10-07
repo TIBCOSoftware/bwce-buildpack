@@ -175,7 +175,7 @@ checkBWProfileEncryptionConfig()
 	fi
 } 
 
-
+export BW_JAVA_OPTS=$BW_JAVA_OPTS' --add-opens java.management/sun.management=ALL-UNNAMED '
 setLogLevel
 checkJAVAHOME
 memoryCalculator
