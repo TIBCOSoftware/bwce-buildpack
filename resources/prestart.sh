@@ -186,7 +186,7 @@ checkJavaGCConfig
 checkThirdPartyInstallation
 checkBWProfileEncryptionConfig
 
-$JAVA_HOME/bin/java $BW_OPTS -cp `echo $BWCE_HOME/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:`echo $BWCE_HOME/tibco.home/bw*/*/system/shared/com.tibco.security.tibcrypt_*.jar`:`echo $BWCE_HOME/tibco.home/bw*/*/system/shared/com.tibco.tpcl.com.fasterxml.jackson_*`/*:`echo $BWCE_HOME/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.encryption.util_*`/lib/*:`echo $BWCE_HOME/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.org.codehaus.jettison_*`/*:`echo $BWCE_HOME/tibco.home/bw*/*/system/shared/com.tibco.tpcl.logback_*`/*:$BWCE_HOME:$JAVA_HOME/lib -DBWCE_APP_NAME=$bwBundleAppName  com.tibco.bwce.profile.resolver.Resolver 1>/dev/null 2>&1
+$JAVA_HOME/bin/java $BW_OPTS -cp `echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bwce.profile.resolver_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.security.tibcrypt_*.jar`:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.tpcl.com.fasterxml.jackson_*`/*:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.bw.tpcl.encryption.util_*`/lib/*:$JETTISON_JAR:.:`echo $APPDIR/tibco.home/bw*/*/system/shared/com.tibco.tpcl.logback_*`/*:$JAVA_HOME/lib com.tibco.bwce.profile.resolver.Resolver 1>/dev/null 2>&1
 STATUS=$?
 if [ $STATUS == "1" ]; then
     echo "ERROR: Failed to subsitute properties."
