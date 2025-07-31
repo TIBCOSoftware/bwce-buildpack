@@ -190,6 +190,20 @@ checkLibs()
 	fi
 }
 
+checkLicense()
+{
+	licenseFolder=$BUILD_PACK_DIR/resources/addons/license
+	
+	if [ -d ${licenseFolder} ] && [ "$(ls $licenseFolder)"  ]; then
+		print_Debug "Copying license files to /tmp/app/license"
+		mkdir -p /tmp/app/license
+		for name in $(find $licenseFolder -type f);
+		do
+			cp -vf "$name" /tmp/app/license/
+		done
+	fi	
+}
+
 checkAgents()
 {
 	agentFolder=$BUILD_PACK_DIR/resources/addons/monitor-agents
@@ -431,6 +445,7 @@ chmod 755 $BUILD_DIR/prestart.sh
 checkEnvSubstituteConfig
 checkJarsPalettes
 checkLibs
+checkLicense
 checkAgents
 checkCerts
 overridePort
