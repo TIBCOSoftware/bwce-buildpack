@@ -175,6 +175,11 @@ checkBWProfileEncryptionConfig()
 	fi
 } 
 
+if [[ -z ${LICENSE_SOURCE} ]]; then
+	export LICENSE_SOURCE="/home/vcap/app/license/"
+	print_Debug "Setting LICENSE_SOURCE to $LICENSE_SOURCE"
+fi 
+
 export BW_OPTS=' --add-opens java.management/sun.management=ALL-UNNAMED --add-opens=java.base/jdk.internal.loader=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.naming/com.sun.jndi.ldap=ALL-UNNAMED --add-exports java.base/sun.security.ssl=ALL-UNNAMED --add-exports java.base/com.sun.crypto.provider=ALL-UNNAMED --add-exports java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED '
 export BW_JAVA_OPTS="$BW_JAVA_OPTS $BW_OPTS"
 
